@@ -37,6 +37,8 @@ public class User {
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    private String activationCode;
+
     public User() {
     }
 
@@ -86,6 +88,13 @@ public class User {
         this.roles = roles;
     }
 
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }
 
 

@@ -11,6 +11,7 @@ import com.mosman.tutorfinderapp.payload.response.MessageResponse;
 import com.mosman.tutorfinderapp.repos.RoleRepo;
 import com.mosman.tutorfinderapp.repos.UserRepo;
 import com.mosman.tutorfinderapp.security.jwt.JwtUtils;
+import com.mosman.tutorfinderapp.security.services.MailSender;
 import com.mosman.tutorfinderapp.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -47,8 +46,28 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    private MailSender mailSender;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+        Optional<User> optionalUser = userRepo.findByUsername(loginRequest.getUsername());
+
+        if (optionalUser.isPresent()){
+            User userFromDb = optionalUser.get();
+
+            if (userFromDb.getActivationCode() != null){
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Account is not activated!"));
+            }
+        }else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username or Password Incorrect!"));
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -104,10 +123,22 @@ public class AuthController {
 
 
         user.setRoles(roles);
+        user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
+
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to TutorFinder. Please, visit this link to activate your account: http://localhost:8080/activate/%s",
+                user.getUsername(),
+                user.getActivationCode()
+        );
+
+
+        mailSender.send(user.getEmail(), "Activation Code", message);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
     private void addRole(Set<Role> roles, ERole role){
         Role teacherRole = roleRepo.findByName(role)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
