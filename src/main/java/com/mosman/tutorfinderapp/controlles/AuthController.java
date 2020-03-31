@@ -1,9 +1,7 @@
 package com.mosman.tutorfinderapp.controlles;
 
 
-import com.mosman.tutorfinderapp.models.ERole;
-import com.mosman.tutorfinderapp.models.Role;
-import com.mosman.tutorfinderapp.models.User;
+import com.mosman.tutorfinderapp.models.*;
 import com.mosman.tutorfinderapp.payload.request.LoginRequest;
 import com.mosman.tutorfinderapp.payload.request.SignupRequest;
 import com.mosman.tutorfinderapp.payload.response.JwtResponse;
@@ -19,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,28 +99,28 @@ public class AuthController {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User();
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null){
-            addRole(roles, ERole.ROLE_STUDENT);
-        }else {
-            strRoles.forEach(role -> {
-                if ("teacher".equals(role)) {
-                    addRole(roles, ERole.ROLE_TEACHER);
-                }else if ("student".equals(role)){
-                    addRole(roles, ERole.ROLE_STUDENT);
-                }
-            });
+        for (String role : strRoles) {
+            if ("teacher".equals(role)) {
+                addRole(roles, ERole.ROLE_TEACHER);
+                user = new Teacher(signUpRequest.getUsername(),
+                        signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()));
+
+            } else if ("student".equals(role)) {
+                addRole(roles, ERole.ROLE_STUDENT);
+                user = new Student(signUpRequest.getUsername(),
+                        signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()));
+
+            }
         }
-
-
         user.setRoles(roles);
-        user.setActivationCode(UUID.randomUUID().toString());
+        user.setActivationCode(UUID.randomUUID().toString()); //comment
         userRepo.save(user);
 
         String message = String.format(
@@ -133,10 +130,10 @@ public class AuthController {
                 user.getActivationCode()
         );
 
-
-        mailSender.send(user.getEmail(), "Activation Code", message);
+        mailSender.send(user.getEmail(), "Activation Code", message); //comment
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
     }
 
     private void addRole(Set<Role> roles, ERole role){
