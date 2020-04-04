@@ -1,16 +1,17 @@
 package com.mosman.tutorfinderapp.models;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Teacher extends User{
 
-    private int experience;
 
+    @OneToMany(mappedBy = "teacher")
+    private Set<Course> courses;
 
     public Teacher() {
 
@@ -19,17 +20,20 @@ public class Teacher extends User{
     public Teacher(String username, String email, String password) {
         super(username, email, password);
     }
-    public Teacher(String username, String email, String password, int experience) {
+    public Teacher(String username, String email, String password, Set<Course> courses) {
         super(username, email, password);
-        this.experience = experience;
+        this.courses = courses;
     }
 
-
-    public int getExperience() {
-        return experience;
+    public void addCourse(Course course){
+        courses.add(course);
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

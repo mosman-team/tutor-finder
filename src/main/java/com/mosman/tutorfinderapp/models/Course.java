@@ -1,30 +1,35 @@
 package com.mosman.tutorfinderapp.models;
 
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Id.class)
     private Long id;
 
+    @JsonView(Views.IdName.class)
     private String course_name;
 
+    @JsonView(Views.IdName.class)
     private String course_desc;
 
+    @JsonView(Views.IdName.class)
     private String course_pic;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "teacher_id")
-//    private Teacher author;
+    @ManyToMany(mappedBy = "enrolledCourses")
+    private Set<Student> students;
 
     public Course() {
-    }
-    public Course(String course_name, String course_desc, String course_pic) {
-        this.course_name = course_name;
-        this.course_desc = course_desc;
-        this.course_pic = course_pic;
     }
 
     public Long getId() {
@@ -59,4 +64,19 @@ public class Course {
         this.course_pic = course_pic;
     }
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
 }

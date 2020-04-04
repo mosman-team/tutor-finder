@@ -105,8 +105,7 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         for (String role : strRoles) {
-            if ("teacher".equals(role)) {
-                addRole(roles, ERole.ROLE_TEACHER);
+            if ("teacher".equals(role)) { addRole(roles, ERole.ROLE_TEACHER);
                 user = new Teacher(signUpRequest.getUsername(),
                         signUpRequest.getEmail(),
                         encoder.encode(signUpRequest.getPassword()));
@@ -120,7 +119,7 @@ public class AuthController {
             }
         }
         user.setRoles(roles);
-        user.setActivationCode(UUID.randomUUID().toString()); //comment
+//        user.setActivationCode(UUID.randomUUID().toString()); //comment
         userRepo.save(user);
 
         String message = String.format(
@@ -130,7 +129,7 @@ public class AuthController {
                 user.getActivationCode()
         );
 
-        mailSender.send(user.getEmail(), "Activation Code", message); //comment
+//        mailSender.send(user.getEmail(), "Activation Code", message); //comment
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
@@ -140,6 +139,10 @@ public class AuthController {
         Role teacherRole = roleRepo.findByName(role)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         roles.add(teacherRole);
+    }
+    @GetMapping("/user")
+    public User getUser(){
+        return userRepo.findById(1L).get();
     }
 
 }
