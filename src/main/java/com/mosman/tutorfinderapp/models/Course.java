@@ -2,6 +2,7 @@ package com.mosman.tutorfinderapp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,13 +15,16 @@ public class Course {
     private Long id;
 
     @JsonView(Views.IdName.class)
-    private String course_name;
+    @Column(name = "course_name")
+    private String courseName;
 
     @JsonView(Views.IdName.class)
-    private String course_desc;
+    @Column(name = "course_desc")
+    private String courseDesc;
 
     @JsonView(Views.IdName.class)
-    private String course_pic;
+    @Column(name = "course_pic")
+    private String coursePic;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
@@ -28,6 +32,7 @@ public class Course {
 
     @ManyToMany(mappedBy = "enrolledCourses")
     private Set<Student> students;
+
 
     public Course() {
     }
@@ -40,28 +45,28 @@ public class Course {
         this.id = id;
     }
 
-    public String getCourse_name() {
-        return course_name;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public String getCourse_desc() {
-        return course_desc;
+    public String getCourseDesc() {
+        return courseDesc;
     }
 
-    public void setCourse_desc(String course_desc) {
-        this.course_desc = course_desc;
+    public void setCourseDesc(String courseDesc) {
+        this.courseDesc = courseDesc;
     }
 
-    public String getCourse_pic() {
-        return course_pic;
+    public String getCoursePic() {
+        return coursePic;
     }
 
-    public void setCourse_pic(String course_pic) {
-        this.course_pic = course_pic;
+    public void setCoursePic(String coursePic) {
+        this.coursePic = coursePic;
     }
 
     public Teacher getTeacher() {
@@ -79,4 +84,5 @@ public class Course {
     public void setStudents(Set<Student> students) {
         this.students = students;
     }
+
 }

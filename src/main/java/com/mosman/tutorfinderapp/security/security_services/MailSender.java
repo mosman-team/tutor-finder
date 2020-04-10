@@ -1,4 +1,4 @@
-package com.mosman.tutorfinderapp.security.services;
+package com.mosman.tutorfinderapp.security.security_services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

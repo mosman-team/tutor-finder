@@ -95,7 +95,7 @@
                 if (this.$refs.form.validate()) {
                     this.$store.dispatch('auth/login', this.user).then(
                         () => {
-                            this.$store.dispatch('setSnackbar', {text : 'Successfully logged in!'});
+                            this.$store.dispatch('setSnackbarAction', {text : 'Successfully logged in!'});
                             this.$router.push('/profile');
                         },
                         error => {
@@ -104,7 +104,7 @@
                                 error.message ||
                                 error.toString();
                             this.message = this.res.message || 'Incorrect username or password';
-                            this.$store.dispatch('setSnackbar',
+                            this.$store.dispatch('setSnackbarAction',
                                 {color : 'error',text : this.message});
                         }
                     );

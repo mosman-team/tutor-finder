@@ -1,24 +1,28 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 import { auth } from './auth.module';
 
 Vue.use(Vuex);
+
+let user = JSON.parse(localStorage.getItem('user'));
+const API_IRL = 'http://localhost:8080/teachers/{}';
 
 export default new Vuex.Store({
     state : {
       snackbars : []
     },
     actions : {
-        setSnackbar({commit}, snackbar){
+        setSnackbarAction({commit}, snackbar){
             snackbar.showing = true;
             snackbar.timeout = snackbar.timeout || 6000;
             snackbar.color = snackbar.color || 'success';
-            commit('SET_SNACKBAR', snackbar)
+            commit('setSnackbarMutation', snackbar)
         }
     },
     mutations : {
-        SET_SNACKBAR(state, snackbar){
+        setSnackbarMutation(state, snackbar){
             state.snackbars = state.snackbars.concat(snackbar);
         }
     },

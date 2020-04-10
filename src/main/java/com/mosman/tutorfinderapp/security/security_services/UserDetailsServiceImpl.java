@@ -1,4 +1,4 @@
-package com.mosman.tutorfinderapp.security.services;
+package com.mosman.tutorfinderapp.security.security_services;
 
 import com.mosman.tutorfinderapp.models.User;
 import com.mosman.tutorfinderapp.repos.UserRepo;

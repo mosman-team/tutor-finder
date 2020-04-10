@@ -128,7 +128,7 @@
                     this.user.addRole(this.select);
                     this.$store.dispatch('auth/register', this.user).then(
                         data => {
-                            this.$store.dispatch('setSnackbar', {text : data.message});
+                            this.$store.dispatch('setSnackbarAction', {text : data.message});
                             this.$router.push('/login')
                         },
                         error => {
@@ -136,7 +136,7 @@
                                 (error.response && error.response.data) ||
                                 error.message ||
                                 error.toString();
-                            this.$store.dispatch('setSnackbar', {color : 'error',text : this.res.message});
+                            this.$store.dispatch('setSnackbarAction', {color : 'error',text : this.res.message});
                         }
                     );
                 }

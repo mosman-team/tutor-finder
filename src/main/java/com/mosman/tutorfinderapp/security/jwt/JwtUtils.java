@@ -1,6 +1,6 @@
 package com.mosman.tutorfinderapp.security.jwt;
 
-import com.mosman.tutorfinderapp.security.services.UserDetailsImpl;
+import com.mosman.tutorfinderapp.security.security_services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

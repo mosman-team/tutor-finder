@@ -2,7 +2,7 @@ package com.mosman.tutorfinderapp.security;
 
 import com.mosman.tutorfinderapp.security.jwt.AuthEntryPointJwt;
 import com.mosman.tutorfinderapp.security.jwt.AuthTokenFilter;
-import com.mosman.tutorfinderapp.security.services.UserDetailsServiceImpl;
+import com.mosman.tutorfinderapp.security.security_services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
