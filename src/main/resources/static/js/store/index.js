@@ -3,11 +3,9 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 import { auth } from './auth.module';
+import {teacherCourse} from "./teacher-course.module";
 
 Vue.use(Vuex);
-
-let user = JSON.parse(localStorage.getItem('user'));
-const API_IRL = 'http://localhost:8080/teachers/{}';
 
 export default new Vuex.Store({
     state : {
@@ -27,6 +25,7 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        auth
+        auth,
+        teacherCourse
     }
 });

@@ -1,10 +1,13 @@
 package com.mosman.tutorfinderapp.controlles;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mosman.tutorfinderapp.dtos.CourseDto;
 import com.mosman.tutorfinderapp.exception.ResourceNotFoundException;
 import com.mosman.tutorfinderapp.models.Course;
 import com.mosman.tutorfinderapp.models.Teacher;
+import com.mosman.tutorfinderapp.models.Topic;
 import com.mosman.tutorfinderapp.models.Views;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
@@ -14,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teachers") ///{teacherId}/course
@@ -48,6 +50,8 @@ public class TeacherController {
             newCourse.setCourseName(courseDto.getCourseName());
             newCourse.setCourseDesc(courseDto.getCourseDesc());
 
+            List<Topic> listOfTopics = getCourseTopics(courseDto.getTopics());
+
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + "." + courseDto.getFile().getOriginalFilename();
 
@@ -56,6 +60,19 @@ public class TeacherController {
             newCourse.setCoursePic(resultFileName);
             return courseRepo.save(newCourse);
         }).orElseThrow(() -> new ResourceNotFoundException("Teacher " + teacherId + " not found"));
+    }
+    private List<Topic> getCourseTopics(String topics){
+
+        List<Topic> listTopics = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            listTopics = Arrays.asList(mapper.readValue(topics, Topic[].class));
+        } catch (JsonProcessingException e) {
+            System.out.println(e);
+        }
+
+        return listTopics;
     }
 
     @PutMapping("/{id}")
@@ -68,5 +85,7 @@ public class TeacherController {
     public void deleteCourse(@PathVariable("id") Long id){
         courseRepo.deleteById(id);
     }
+
+
 
 }

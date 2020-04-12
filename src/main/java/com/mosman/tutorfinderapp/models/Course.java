@@ -33,6 +33,9 @@ public class Course {
     @ManyToMany(mappedBy = "enrolledCourses")
     private Set<Student> students;
 
+    @OneToMany(mappedBy = "course")
+    @JsonView(Views.IdName.class)
+    private Set<Topic> topics;
 
     public Course() {
     }
@@ -85,4 +88,11 @@ public class Course {
         this.students = students;
     }
 
+    public Set<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
+    }
 }

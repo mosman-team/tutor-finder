@@ -1,6 +1,9 @@
 package com.mosman.tutorfinderapp.dtos;
 
+import com.mosman.tutorfinderapp.models.Topic;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public class CourseDto {
 
@@ -8,6 +11,7 @@ public class CourseDto {
     private String courseDesc;
     private String coursePic;
     private MultipartFile file;
+    private String topics;
 
     public String getCourseName() {
         return courseName;
@@ -39,5 +43,13 @@ public class CourseDto {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String topics) {
+        this.topics = topics;
     }
 }
