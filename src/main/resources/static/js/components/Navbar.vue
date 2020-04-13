@@ -47,10 +47,12 @@
         <v-navigation-drawer app v-model="drawer" class="primary" absolute v-if="currentUser">
             <v-layout column align-center>
                 <v-flex class="mt-5">
-                    <v-avatar size="100">
-
+                    <v-avatar size="100px">
+                        <router-link to="/profile">
+                            <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/0055765993ad4582e97bd6b8a37782c126288f33_full.jpg">
+                        </router-link>
                     </v-avatar>
-                    <p class="white--text subheading mt-1">
+                    <p class="font-weight-black white--text text-center mt-2">
                         {{currentUser.username}}
                     </p>
                 </v-flex>
@@ -81,9 +83,10 @@
             return {
                 drawer : false,
                 links : [
-                    {icon : 'dashboard', text : 'Dashboard', route : '/'},
-                    {icon : 'folder', text : 'My Projects', route : '/projects'},
-                    {icon : 'person', text : 'Team', route : '/team'},
+                    {icon : 'home', text : 'Home', route : '/'},
+                    {icon : 'folder', text : 'My Courses', route : '/courses'},
+                    {icon : 'library_add', text : 'Add New Course', route : '/add-course'},
+                    {icon : 'mdi-email', text : 'New Messages', route : '/messages'},
                 ]
             }
         },

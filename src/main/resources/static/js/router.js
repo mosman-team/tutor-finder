@@ -6,7 +6,9 @@ import Register from './views/auth_views/Register.vue';
 import Profile from "./views/auth_views/Profile.vue";
 import BoardStudent from "./views/BoardStudent.vue";
 import BoardTeacher from "./views/BoardTeacher.vue";
-import AddCourse from "./components/AddCourse.vue";
+import AddCourse from "./views/AddCourse.vue";
+import CreateCourse from "./components/CreateCourse.vue";
+import SetCourseTopics from "./components/SetCourseTopics.vue";
 Vue.use(Router);
 
 export const router = new Router({
@@ -45,10 +47,11 @@ export const router = new Router({
             component: BoardTeacher
         },
         {
-            path : '/addCourse',
+            path : '/add-course',
             name : 'addCourse',
-            component : AddCourse
+            component : AddCourse,
         },
+
     ]
 });
 

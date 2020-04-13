@@ -16,7 +16,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 @RestController
@@ -50,14 +52,15 @@ public class TeacherController {
             newCourse.setCourseName(courseDto.getCourseName());
             newCourse.setCourseDesc(courseDto.getCourseDesc());
 
-            List<Topic> listOfTopics = getCourseTopics(courseDto.getTopics());
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + courseDto.getFile().getOriginalFilename();
-
+            String resultFileName = "test2.png";
+            if (courseDto.getFile() != null){
+                String uuidFile = UUID.randomUUID().toString();
+                resultFileName = uuidFile + "." + courseDto.getFile().getOriginalFilename();
+                storageService.save(courseDto.getFile(), resultFileName);
+            }
             newCourse.setTeacher(teacher);
-            storageService.save(courseDto.getFile(), resultFileName);
             newCourse.setCoursePic(resultFileName);
+
             return courseRepo.save(newCourse);
         }).orElseThrow(() -> new ResourceNotFoundException("Teacher " + teacherId + " not found"));
     }

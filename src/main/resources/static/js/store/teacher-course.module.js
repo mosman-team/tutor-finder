@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:8080/teachers/';
 export const teacherCourse = {
 
     state : {
-
+        currentCourse : null
     },
     actions : {
         addCourseAction({commit}, formData){
@@ -17,10 +17,25 @@ export const teacherCourse = {
                         "Content-Type": "multipart/form-data"
                     }
                 }
-            ).then(console.log).catch(console.log);
+            ).then(
+                response => {
+                    commit('updateCourseMutation', response.data)
+                    return Promise.resolve(response.data);
+                },
+                error => {
+                    return Promise.reject(error)
+                }
+            );
         }
     },
     mutations : {
-
+        updateCourseMutation(state, course){
+            state.currentCourse = course;
+        }
+    },
+    getters : {
+        currentCourse(state){
+            return state.currentCourse
+        }
     }
 }
