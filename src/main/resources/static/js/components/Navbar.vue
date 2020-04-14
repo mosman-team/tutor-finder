@@ -10,8 +10,7 @@
             <div class="text-center" v-if="currentUser">
                 <v-menu offset-y>
                     <template v-slot:activator="{ on }">
-                        <v-btn
-                                text
+                        <v-btn  text
                                 color="grey"
                                 v-on="on">
                             <v-icon left>expand_more</v-icon>
