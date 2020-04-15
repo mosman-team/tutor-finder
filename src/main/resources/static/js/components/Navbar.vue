@@ -43,7 +43,7 @@
 
         </v-app-bar>
 
-        <v-navigation-drawer app v-model="drawer" class="primary" absolute v-if="currentUser">
+        <v-navigation-drawer app v-model="drawer" class="primary" v-if="currentUser">
             <v-layout column align-center>
                 <v-flex class="mt-5">
                     <v-avatar size="100px">

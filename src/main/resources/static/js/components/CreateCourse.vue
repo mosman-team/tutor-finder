@@ -4,7 +4,7 @@
             <v-card-text>
                 <v-text-field
                         ref="courseName"
-                        v-model="course.courseName"
+                        v-model="currentCourse.courseName"
                         :rules="courseNameRules"
                         label="Course Name"
                         placeholder="Fantastic journey into the world of numbers"
@@ -12,7 +12,7 @@
                 ></v-text-field>
                 <v-textarea
                         ref="courseDesc"
-                        v-model="course.courseDesc"
+                        v-model="currentCourse.courseDesc"
                         :rules="courseDescRules"
                         placeholder="This course full of ..."
                         label="Course Description"
@@ -28,17 +28,19 @@
                 <v-btn color="primary" text type="submit">Submit</v-btn>
             </v-card-actions>
         </v-card>
+        <v-btn @click="printCourse">
+            print
+        </v-btn>
     </v-form>
 </template>
 
 <script>
     import Course from "../models/Course";
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     export default {
         name : 'AddCourse',
         data() {
             return {
-                course: new Course('Arithmetics', 'Test Description'),
                 // rules
                 courseNameRules: [],
                 courseDescRules: [],
@@ -47,11 +49,14 @@
                 //topic
             }
         },
+        computed: {
+            ...mapGetters(['currentCourse'])
+        },
         watch: {
-            'course.courseName' (val){
+            'currentCourse.courseName' (val){
                 this.courseNameRules = []
             },
-            'course.courseDesc' (val){
+            'currentCourse.courseDesc' (val){
                 this.courseDescRules = []
             }
         },
@@ -59,6 +64,9 @@
             ...mapActions(['addCourseAction']),
             resetForm () {
                 this.$refs.form.reset()
+            },
+            printCourse(){
+                console.log(this.currentCourse);
             },
             submitHandler () {
                 this.courseNameRules = [
@@ -74,8 +82,8 @@
                     if (this.files.length !== 0){
                         formData.append("file", this.files);
                     }
-                    formData.append("courseName",this.course.courseName)
-                    formData.append("courseDesc",this.course.courseDesc)
+                    formData.append("courseName", this.currentCourse.courseName)
+                    formData.append("courseDesc", this.currentCourse.courseDesc)
                     this.addCourseAction(formData).then(
                         data => {
                             this.$store.dispatch('setSnackbarAction', {text : 'Course created successfully!'});

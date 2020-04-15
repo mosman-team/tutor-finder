@@ -1,12 +1,13 @@
 import axios from "axios";
 import authHeader from "../services/auth-header";
+import Course from "../models/Course";
 
 const API_URL = 'http://localhost:8080/teachers/';
 
 export const teacherCourse = {
 
     state : {
-        currentCourse : null
+        currentCourse : new Course(null, '', '', '')
     },
     actions : {
         addCourseAction({commit}, formData){
@@ -31,6 +32,10 @@ export const teacherCourse = {
     mutations : {
         updateCourseMutation(state, course){
             state.currentCourse = course;
+        },
+        courseCreationProcedureFinished(state){
+            state.currentCourse = null
+            sessionStorage.clear()
         }
     },
     getters : {

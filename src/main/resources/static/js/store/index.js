@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { auth } from './auth.module';
 import {teacherCourse} from "./teacher-course.module";
+import createPersistedState from "vuex-persistedstate";
+
 
 Vue.use(Vuex);
 
@@ -25,7 +27,12 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        auth,
-        teacherCourse
-    }
+        auth:auth,
+        teacherCourse:teacherCourse
+    },
+    plugins: [createPersistedState({
+        storage: window.sessionStorage,
+        key: 'vuex_tc',
+        paths: ['teacherCourse']
+    })]
 });
