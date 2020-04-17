@@ -69,6 +69,7 @@
 <script>
     import {mapActions, mapGetters} from 'vuex';
     import Topic from "../models/Topic";
+    import {successCallback} from "../services/helper-functions";
 
     export default {
         name : 'AddCourse',
@@ -87,7 +88,7 @@
             this.fetchTopicsAction()
         },
         methods: {
-            ...mapActions(['addTopicAction', 'fetchTopicsAction', 'deleteTopicAction']),
+            ...mapActions(['addTopicAction', 'fetchTopicsAction', 'deleteTopicAction', 'updateTopicAction']),
             editTopic(i){
                 if (this.selectedTopic !== i){
                     this.selectedTopic = i
@@ -112,13 +113,18 @@
             submitHandler () {
                 if (this.$refs.form.validate()){
                     console.log(this.topic)
-                    this.addTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id}).then(
-                        data => {
-                            this.$store.dispatch('setSnackbarAction', {text : 'Course topic created successfully!'});
-                        }, error =>{
-                            this.$store.dispatch('setSnackbarAction', {color : 'error',text : 'Some fields are invalid!'});
-                        }
-                    );
+                    if (this.topic.id){
+                        this.updateTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id})
+                        this.selectedTopic = null
+                    }else {
+                        this.addTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id}).then(
+                            data => {
+                                this.$store.dispatch('setSnackbarAction', {text : 'Course topic created successfully!'});
+                            }, error =>{
+                                this.$store.dispatch('setSnackbarAction', {color : 'error',text : 'Some fields are invalid!'});
+                            }
+                        );
+                    }
                     this.resetTopicInForm()
                 }
             },

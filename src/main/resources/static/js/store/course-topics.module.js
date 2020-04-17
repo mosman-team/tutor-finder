@@ -52,6 +52,18 @@ export const courseTopics = {
                     return Promise.reject(error);
                 }
             )
+        },
+        updateTopicAction({commit}, data){
+            axios.put(API_URL+ this.state.auth.user.id +"/courses/"+data.courseId+"/topics/"+data.topic.id,
+                data.topic,
+                {
+                    headers: {
+                        "Authorization" : authHeader().Authorization,
+                    }
+                }
+            ).then(
+                successCallback(commit, 'updateTopicMutation'),failureCallback()
+            )
         }
     },
     mutations : {
@@ -72,6 +84,15 @@ export const courseTopics = {
                     ...state.topics.slice(deleteIndex + 1)
                 ]
             }
+        },
+        updateTopicMutation(state, topic){
+            const updateIndex = state.topics.findIndex(item => item.id === topic.id)
+
+            state.topics = [
+                ...state.topics.slice(0, updateIndex),
+                topic,
+                ...state.topics.slice(updateIndex + 1)
+            ]
         }
     },
     getters : {

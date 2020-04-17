@@ -34,7 +34,8 @@ public class TopicController {
     @PutMapping("/{teacherId}/courses/{courseId}/topics/{topicId}")
     @JsonView(Views.IdName.class)
     public Topic getCourseTopics(@PathVariable("topicId") Topic topicFromDb, @RequestBody Topic topic){
-        BeanUtils.copyProperties(topic, topicFromDb, "id");
+        topicFromDb.setTitle(topic.getTitle());
+        topicFromDb.setHours(topic.getHours());
         return topicRepo.save(topicFromDb);
     }
 
