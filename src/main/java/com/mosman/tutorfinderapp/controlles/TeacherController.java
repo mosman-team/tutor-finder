@@ -56,6 +56,8 @@ public class TeacherController {
             newCourse.setCourseDesc(courseDto.getCourseDesc());
             newCourse.setTeacher(teacher);
 
+            System.out.println(courseDto);
+
             if (courseDto.getFile() != null){
                 String resultFileName = getResultFileName(courseDto.getFile().getOriginalFilename());
                 storageService.save(courseDto.getFile(), resultFileName);
@@ -75,7 +77,7 @@ public class TeacherController {
 
         courseFromDb.setCourseName(courseDto.getCourseName());
         courseFromDb.setCourseDesc(courseDto.getCourseDesc());
-        System.out.println(courseDto);
+
         if (courseDto.getFile() == null && (courseDto.getCoursePic().equals("") || courseDto.getCoursePic() == null)){
             courseFromDb.setCoursePic(null);
         }
@@ -87,7 +89,6 @@ public class TeacherController {
             storageService.save(courseDto.getFile(), resultFileName);
             courseFromDb.setCoursePic(resultFileName);
         }
-        System.out.println(courseFromDb);
         return courseRepo.save(courseFromDb);
     }
     private String getResultFileName(String originalFilename){

@@ -1,5 +1,5 @@
 <template>
-    <v-form ref="form" @submit.prevent="submitHandler">
+    <v-form ref="form" @submit.prevent="submitHandler" v-model="valid" :lazy-validation="lazy">
         <v-card>
             <v-card-text>
                 <v-text-field
@@ -38,23 +38,29 @@
                 <v-btn color="error" text @click="resetForm">Reset Form
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text type="submit">Submit</v-btn>
+                <v-btn color="primary" text type="submit" :disabled="!valid">Submit</v-btn>
             </v-card-actions>
         </v-card>
     </v-form>
 </template>
 
 <script>
-    import Course from "../models/Course";
-    import {successCallback, failureCallback} from "services/helper-functions"
     import {mapActions, mapGetters, mapMutations} from 'vuex';
+
     export default {
         name : 'AddCourse',
         data() {
             return {
+                valid : true,
+                lazy : false,
                 // rules
-                courseNameRules: [],
-                courseDescRules: [],
+                courseNameRules : [
+                    v => !!v || 'Course name is required',
+                ],
+                courseDescRules : [
+                    v => !!v || 'Course description is required',
+                    // v => (v && v.length >= 10) || 'Name must be more than 10 characters',
+                ],
                 // files
                 files: [],
 
@@ -68,14 +74,6 @@
                     color : "orange",
                     name : this.getCourseImgName,
                 }
-            }
-        },
-        watch: {
-            'getCurrentCourse.courseName' (val){
-                this.courseNameRules = []
-            },
-            'getCurrentCourse.courseDesc' (val){
-                this.courseDescRules = []
             }
         },
         methods: {
@@ -100,13 +98,6 @@
                 this.files = []
             },
             submitHandler () {
-                this.courseNameRules = [
-                    v => !!v || 'Course name is required',
-                ];
-                this.courseDescRules = [
-                    v => !!v || 'Course description is required',
-                    // v => (v && v.length >= 10) || 'Name must be more than 10 characters',
-                ];
                 if (this.$refs.form.validate()){
                     //other codes
                     let formData = new FormData();

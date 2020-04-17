@@ -14,16 +14,7 @@
                     <v-list-item-content>
                         <v-list-item-title v-html=" '<i>' + (i+1) + ')' + '</i> ' + topic.title"></v-list-item-title>
                         <v-list-item-subtitle v-html="'<kbd>' + topic.hours +'h</kbd>'" ></v-list-item-subtitle>
-
                     </v-list-item-content>
-                    <div class="d-flex flex-column">
-                        <v-btn icon :class="{'hideUpArrowClass' : i === 0}">
-                            <v-icon small>mdi-arrow-up</v-icon>
-                        </v-btn>
-                        <v-btn icon :class="{'hideDownArrowClass' : i === getCourseTopics.length - 1}">
-                            <v-icon small>mdi-arrow-down</v-icon>
-                        </v-btn>
-                    </div>
                     <div class="d-flex">
                         <v-btn icon @click="editTopic(i)">
                             <v-icon small>mdi-pencil</v-icon>
@@ -36,7 +27,7 @@
                 <!--                </v-list-topic-group>-->
             </v-list>
         </v-card>
-        <v-form ref="form" @submit.prevent="submitHandler">
+        <v-form ref="form" @submit.prevent="submitHandler" v-model="valid">
             <v-card>
                 <v-subheader>Topic</v-subheader>
                 <v-card-text>
@@ -45,21 +36,23 @@
                             label="Title"
                             placeholder="Conditions"
                             v-model="topic.title"
+                            :rules="titleRules"
                             required>
                     </v-text-field>
                     <v-text-field
                             ref="hours"
                             label="Hours"
                             placeholder="5"
+                            :rules="hoursRules"
                             v-model="topic.hours"
                             required>
                     </v-text-field>
                 </v-card-text>
                 <v-divider class="mt-12"></v-divider>
                 <v-card-actions>
-                    <v-btn text>Cancel</v-btn>
+                    <v-btn text @click="resetForm" color="error">Reset Form</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" text type="submit">Submit</v-btn>
+                    <v-btn color="primary" text type="submit" :disabled="!valid">Submit</v-btn>
                 </v-card-actions>
             </v-card>
         </v-form>
@@ -69,7 +62,6 @@
 <script>
     import {mapActions, mapGetters} from 'vuex';
     import Topic from "../models/Topic";
-    import {successCallback} from "../services/helper-functions";
 
     export default {
         name : 'AddCourse',
@@ -80,7 +72,16 @@
                 twoLine : true,
                 subheader: true,
                 nav: false,
-                selectedTopic : null
+                selectedTopic : null,
+                valid : true,
+                // rules
+                titleRules : [
+                    v => !!v || 'Topic title is required',
+                ],
+                hoursRules : [
+                    v => !!v || 'Hours for topic is required',
+                    v => /^\d+$/.test(v) || 'Must be a number'
+                ]
             }
         },
         computed : mapGetters(['getCourseTopics', 'getCurrentCourse']),
@@ -88,7 +89,7 @@
             this.fetchTopicsAction()
         },
         methods: {
-            ...mapActions(['addTopicAction', 'fetchTopicsAction', 'deleteTopicAction', 'updateTopicAction']),
+            ...mapActions(['addTopicAction', 'fetchTopicsAction', 'deleteTopicAction', 'updateTopicAction', 'swapTopicsAction']),
             editTopic(i){
                 if (this.selectedTopic !== i){
                     this.selectedTopic = i
@@ -109,6 +110,7 @@
             },
             resetTopicInForm(){
                 this.topic = new Topic(null,'', null)
+
             },
             submitHandler () {
                 if (this.$refs.form.validate()){
@@ -117,19 +119,15 @@
                         this.updateTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id})
                         this.selectedTopic = null
                     }else {
-                        this.addTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id}).then(
-                            data => {
-                                this.$store.dispatch('setSnackbarAction', {text : 'Course topic created successfully!'});
-                            }, error =>{
-                                this.$store.dispatch('setSnackbarAction', {color : 'error',text : 'Some fields are invalid!'});
-                            }
-                        );
+                        this.addTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id});
                     }
                     this.resetTopicInForm()
+                    this.resetForm()
                 }
             },
             swap(i, j){
-
+                this.swapTopicsAction({firstTopicId : this.getCourseTopics[i].id,
+                    secondTopicId : this.getCourseTopics[j].id, courseId : this.getCurrentCourse.id})
             }
         }
     }

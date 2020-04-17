@@ -16,6 +16,7 @@ function failureCallback(msg, store) {
 
 function successCallback(commit,commitName) {
     return response => {
+        console.log(response.status)
         commit(commitName, response.data)
         return Promise.resolve(response);
     };
@@ -25,4 +26,8 @@ function failureCallback() {
         return Promise.reject(error);
     };
 }
-export {successCallback, failureCallback}
+function displaySnackbar(dispatch, params) {
+    dispatch('setSnackbarAction', params,
+        { root: true })
+}
+export {successCallback, failureCallback, displaySnackbar}

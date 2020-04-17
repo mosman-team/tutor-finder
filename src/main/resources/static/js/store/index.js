@@ -16,7 +16,7 @@ export default new Vuex.Store({
     actions : {
         setSnackbarAction({commit}, snackbar){
             snackbar.showing = true;
-            snackbar.timeout = snackbar.timeout || 6000;
+            snackbar.timeout = snackbar.timeout || 2000;
             snackbar.color = snackbar.color || 'success';
             commit('setSnackbarMutation', snackbar)
         }
