@@ -37,7 +37,6 @@ public class  FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
-
   @Override
   public Resource load(String filename) {
     try {
@@ -70,5 +69,11 @@ public class  FilesStorageServiceImpl implements FilesStorageService {
   @Override
   public Path getRoot() {
     return root;
+  }
+
+  @Override
+  public void delete(String filename) throws IOException {
+      Path file = root.resolve(filename);
+      Files.delete(file);
   }
 }

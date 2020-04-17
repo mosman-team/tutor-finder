@@ -3,9 +3,9 @@
         <v-row justify="center">
             <v-col cols="12" sm="8" md="6" lg="4">
 
-                <p v-if="!currentCourse.id" class="headline text-center green--text text--lighten-2">Create Course</p>
+                <p v-if="!getCurrentCourse.id" class="headline text-center green--text text--lighten-2">Create Course</p>
 
-                <v-slider v-if="currentCourse.id"
+                <v-slider v-if="getCurrentCourse.id"
                           class="font-weight-light"
                           v-model="courseAddStage"
                           :tick-labels="seasons"
@@ -47,7 +47,7 @@
     import CreateCourse from "../components/CreateCourse.vue";
     import SetCourseTopics from "../components/SetCourseTopics.vue";
     import SetCourseInfo from "../components/SetCourseInfo.vue";
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapMutations} from 'vuex';
     export default {
         name : 'AddCourse',
         components : {
@@ -76,7 +76,7 @@
                 courseAddStage: 0
             }
         },
-        computed : mapGetters(["currentCourse"]),
+        computed : mapGetters(["getCurrentCourse"]),
         watch : {
             currentCourse(newVal){
                 if (newVal.id !== null){
@@ -88,10 +88,14 @@
             }
         },
         methods: {
+            ...mapMutations(['courseCreationProcedureFinished']),
             season (val) {
                 return this.icons[val]
             }
         },
+        beforeDestroy() {
+            this.courseCreationProcedureFinished();
+        }
     }
 </script>
 

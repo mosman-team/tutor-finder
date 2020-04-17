@@ -1,7 +1,7 @@
 export default class Topic {
-    constructor(title, subtitle ,hours) {
+    constructor(id,title, hours) {
+        this.id = id
         this.title = title;
-        this.subtitle = subtitle;
         this.hours = hours;
     }
 }

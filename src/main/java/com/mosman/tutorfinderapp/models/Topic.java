@@ -1,5 +1,7 @@
 package com.mosman.tutorfinderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,9 +9,13 @@ public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Long;
+    @JsonView(Views.Id.class)
+    private Long id;
 
+    @JsonView(Views.IdName.class)
     private String title;
+
+    @JsonView(Views.IdName.class)
     private int hours;
 
     @ManyToOne
@@ -19,14 +25,13 @@ public class Topic {
     public Topic() {
     }
 
-    public int getLong() {
-        return Long;
+    public Long getId() {
+        return id;
     }
 
-    public void setLong(int aLong) {
-        Long = aLong;
+    public void setId(Long id) {
+        this.id = id;
     }
-
     public String getTitle() {
         return title;
     }

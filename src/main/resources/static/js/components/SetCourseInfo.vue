@@ -4,7 +4,7 @@
             Set course info
         </h1>
 
-        <v-btn small color="primary" @click="this.courseCreationProcedureFinished" >Finish</v-btn>
+        <v-btn small color="primary" @click="finishCreateCourse" >Finish</v-btn>
 
     </div>
 </template>
@@ -19,6 +19,11 @@
         ],
         methods: {
             ...mapMutations(['courseCreationProcedureFinished']),
+
+            finishCreateCourse(){
+                this.courseCreationProcedureFinished();
+                this.$router.push('/courses');
+            }
 
         }
     }

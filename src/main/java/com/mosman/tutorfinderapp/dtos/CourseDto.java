@@ -6,6 +6,7 @@ public class CourseDto {
 
     private String courseName;
     private String courseDesc;
+    private String coursePic;
     private MultipartFile file;
 
     public String getCourseName() {
@@ -32,4 +33,11 @@ public class CourseDto {
         this.file = file;
     }
 
+    public String getCoursePic() {
+        return coursePic;
+    }
+
+    public void setCoursePic(String coursePic) {
+        this.coursePic = coursePic;
+    }
 }

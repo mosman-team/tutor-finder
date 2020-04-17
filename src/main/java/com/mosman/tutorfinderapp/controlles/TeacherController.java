@@ -11,14 +11,17 @@ import com.mosman.tutorfinderapp.models.Topic;
 import com.mosman.tutorfinderapp.models.Views;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
+import com.mosman.tutorfinderapp.repos.TopicRepo;
 import com.mosman.tutorfinderapp.services.file_upload.FilesStorageService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -51,44 +54,45 @@ public class TeacherController {
             Course newCourse = new Course();
             newCourse.setCourseName(courseDto.getCourseName());
             newCourse.setCourseDesc(courseDto.getCourseDesc());
-
-            String resultFileName = "test2.png";
-            if (courseDto.getFile() != null){
-                String uuidFile = UUID.randomUUID().toString();
-                resultFileName = uuidFile + "." + courseDto.getFile().getOriginalFilename();
-                storageService.save(courseDto.getFile(), resultFileName);
-            }
             newCourse.setTeacher(teacher);
-            newCourse.setCoursePic(resultFileName);
 
+            if (courseDto.getFile() != null){
+                String resultFileName = getResultFileName(courseDto.getFile().getOriginalFilename());
+                storageService.save(courseDto.getFile(), resultFileName);
+                newCourse.setCoursePic(resultFileName);
+            }
             return courseRepo.save(newCourse);
+
         }).orElseThrow(() -> new ResourceNotFoundException("Teacher " + teacherId + " not found"));
     }
-    private List<Topic> getCourseTopics(String topics){
 
-        List<Topic> listTopics = new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
+    @PutMapping("/{teacherId}/courses/{courseId}")
+    @JsonView(Views.IdName.class)
+    public Course updateCourse(
+            @ModelAttribute CourseDto courseDto,
+            @PathVariable("courseId") Course courseFromDb
+    ) throws IOException {
 
-        try {
-            listTopics = Arrays.asList(mapper.readValue(topics, Topic[].class));
-        } catch (JsonProcessingException e) {
-            System.out.println(e);
+        courseFromDb.setCourseName(courseDto.getCourseName());
+        courseFromDb.setCourseDesc(courseDto.getCourseDesc());
+        System.out.println(courseDto);
+        if (courseDto.getFile() == null && (courseDto.getCoursePic().equals("") || courseDto.getCoursePic() == null)){
+            courseFromDb.setCoursePic(null);
         }
-
-        return listTopics;
-    }
-
-    @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable("id") Course courseFromDb, @RequestBody Course course){
-        BeanUtils.copyProperties(course, courseFromDb, "id");
+        if (courseDto.getFile() != null){
+            if (courseFromDb.getCoursePic() != null){
+                storageService.delete(courseFromDb.getCoursePic());
+            }
+            String resultFileName = getResultFileName(courseDto.getFile().getOriginalFilename());
+            storageService.save(courseDto.getFile(), resultFileName);
+            courseFromDb.setCoursePic(resultFileName);
+        }
+        System.out.println(courseFromDb);
         return courseRepo.save(courseFromDb);
     }
-
-    @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable("id") Long id){
-        courseRepo.deleteById(id);
+    private String getResultFileName(String originalFilename){
+        String uuidFile = UUID.randomUUID().toString();
+        return uuidFile + "." + originalFilename;
     }
-
-
 
 }
