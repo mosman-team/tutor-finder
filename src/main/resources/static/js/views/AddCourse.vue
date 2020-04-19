@@ -3,7 +3,7 @@
         <v-row justify="center">
             <v-col cols="12" sm="8" md="6" lg="4">
 
-                <p v-if="!getCurrentCourse.id" class="headline text-center green--text text--lighten-2">Create Course</p>
+                <p v-if="!getCurrentCourse.id" class="headline text-center green--text text--lighten-2 ma-0">Create Course</p>
 
                 <v-slider v-if="getCurrentCourse.id"
                           class="font-weight-light"
@@ -78,8 +78,8 @@
         },
         computed : mapGetters(["getCurrentCourse"]),
         watch : {
-            currentCourse(newVal){
-                if (newVal.id !== null){
+            'getCurrentCourse.id'(newVal){
+                if (newVal !== null){
                     this.courseAddStage = 1
                 }
             },
@@ -88,13 +88,18 @@
             }
         },
         methods: {
-            ...mapMutations(['courseCreationProcedureFinished']),
+            ...mapMutations(['emptyCourseMutation', 'emptyCourseInfoMutation']),
             season (val) {
                 return this.icons[val]
             }
         },
         beforeDestroy() {
-            this.courseCreationProcedureFinished();
+            this.emptyCourseInfoMutation();
+            this.emptyCourseMutation();
+            sessionStorage.clear();
+        },
+        $route(to, from) {
+            console.log('hello world');
         }
     }
 </script>

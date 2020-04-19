@@ -1,28 +1,21 @@
 package com.mosman.tutorfinderapp.controlles;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mosman.tutorfinderapp.dtos.CourseDto;
 import com.mosman.tutorfinderapp.exception.ResourceNotFoundException;
 import com.mosman.tutorfinderapp.models.Course;
 import com.mosman.tutorfinderapp.models.Teacher;
-import com.mosman.tutorfinderapp.models.Topic;
 import com.mosman.tutorfinderapp.models.Views;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
-import com.mosman.tutorfinderapp.repos.TopicRepo;
 import com.mosman.tutorfinderapp.services.file_upload.FilesStorageService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/teachers") ///{teacherId}/course

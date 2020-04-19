@@ -6,13 +6,11 @@ import com.mosman.tutorfinderapp.models.Topic;
 import com.mosman.tutorfinderapp.models.Views;
 import com.mosman.tutorfinderapp.payload.request.SwapTopics;
 import com.mosman.tutorfinderapp.repos.TopicRepo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/teachers") ///{teacherId}/course

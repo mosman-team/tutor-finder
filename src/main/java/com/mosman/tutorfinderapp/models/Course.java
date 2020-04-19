@@ -2,9 +2,9 @@ package com.mosman.tutorfinderapp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,8 +34,17 @@ public class Course {
     private Set<Student> students;
 
     @OneToMany(mappedBy = "course")
-    @JsonView(Views.IdName.class)
     private Set<Topic> topics;
+
+    // additional info
+    private String city;
+    private String address;
+    private Long price;
+    private String language;
+
+    @ElementCollection
+    private List<String> keyWords = new ArrayList<String>();
+
 
     public Course() {
     }
@@ -94,5 +103,45 @@ public class Course {
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<String> getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(List<String> keyWords) {
+        this.keyWords = keyWords;
     }
 }

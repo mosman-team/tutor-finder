@@ -41,9 +41,8 @@ export const teacherCourse = {
         updateCourseMutation(state, course){
             state.currentCourse = course;
         },
-        courseCreationProcedureFinished(state){
+        emptyCourseMutation(state){
             state.currentCourse = new Course(null, '', '', '')
-            sessionStorage.clear()
         },
         setCourseImgNameMutation(state, imgName){
             state.currentCourse.coursePic = imgName;

@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 
 import { auth } from './auth.module';
 import {teacherCourse} from "./teacher-course.module";
-import {courseTopics} from './course-topics.module'
+import {courseTopics} from './course-topics.module';
+import {courseInfo} from './course-info.module';
 import createPersistedState from "vuex-persistedstate";
 
 
@@ -29,11 +30,18 @@ export default new Vuex.Store({
     modules: {
         auth:auth,
         teacherCourse:teacherCourse,
-        courseTopics:courseTopics
+        courseTopics:courseTopics,
+        courseInfo: courseInfo,
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,
         key: 'vuex_tc',
         paths: ['teacherCourse']
-    })]
+    }),
+    createPersistedState({
+        storage: window.sessionStorage,
+        key: 'vuex_ci',
+        paths: ['courseInfo']
+    })
+    ]
 });
