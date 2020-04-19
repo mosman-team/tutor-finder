@@ -34,7 +34,6 @@ public class Course {
     private Set<Student> students;
 
     @OneToMany(mappedBy = "course")
-    @JsonView(Views.IdName.class)
     private Set<Topic> topics;
 
     public Course() {

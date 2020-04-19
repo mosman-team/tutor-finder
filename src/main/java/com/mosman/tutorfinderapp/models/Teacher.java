@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 public class Teacher extends User{
 
-
     @OneToMany(mappedBy = "teacher")
     private Set<Course> courses;
 

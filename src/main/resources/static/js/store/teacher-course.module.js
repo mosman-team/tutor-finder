@@ -2,18 +2,18 @@ import axios from "axios";
 import authHeader from "../services/auth-header";
 import Course from "../models/Course";
 
-import {successCallback, failureCallback} from "../services/helper-functions";
+import {displaySnackbar} from "../services/helper-functions";
 
-const API_URL = 'http://localhost:8080/teachers/';
+const API_URL = 'http://localhost:8080/teachers';
 
 export const teacherCourse = {
 
     state : {
-        currentCourse : new Course(null, '', '', ''),
+        currentCourse : new Course(null, '', '', '')
     },
     actions : {
-        addCourseAction({commit}, formData){
-            axios.post(API_URL+ this.state.auth.user.id +"/courses", formData,
+        addCourseAction({commit, dispatch}, formData){
+            axios.post(API_URL + "/courses", formData,
                 {
                     headers: {
                         "Authorization" : authHeader().Authorization,
@@ -21,11 +21,16 @@ export const teacherCourse = {
                     }
                 }
             ).then(
-                successCallback(commit,'updateCourseMutation'), failureCallback()
+                response => {
+                    commit('updateCourseMutation', response.data)
+                    displaySnackbar(dispatch, {text : 'Course created successfully!'})
+                }, error =>{
+                    displaySnackbar(dispatch, {color : 'error',text : 'Some fields are invalid!'})
+                }
             );
         },
-        updateCourseAction({commit}, data){
-            axios.put(API_URL+ this.state.auth.user.id +"/courses/"+data.courseId, data.formData,
+        updateCourseAction({commit, dispatch}, data){
+            axios.put(API_URL+ "/courses/"+data.courseId, data.formData,
                 {
                     headers: {
                         "Authorization" : authHeader().Authorization,
@@ -33,7 +38,12 @@ export const teacherCourse = {
                     }
                 }
             ).then(
-                successCallback(commit,'updateCourseMutation'), failureCallback()
+                response => {
+                    commit('updateCourseMutation', response.data)
+                    displaySnackbar(dispatch, {text : 'Course updated successfully!'})
+                }, error =>{
+                    displaySnackbar(dispatch, {color : 'error',text : 'Some fields are invalid!'})
+                }
             );
         }
     },
@@ -47,6 +57,9 @@ export const teacherCourse = {
         },
         setCourseImgNameMutation(state, imgName){
             state.currentCourse.coursePic = imgName;
+        },
+        setCurrentCourseMutation(state,data){
+            state.currentCourse = data.course
         }
     },
     getters : {

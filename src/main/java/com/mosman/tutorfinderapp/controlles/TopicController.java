@@ -22,18 +22,18 @@ public class TopicController {
     @Autowired
     private TopicRepo topicRepo;
 
-    @PostMapping("/{teacherId}/courses/{courseId}/topics")
+    @PostMapping("/courses/{courseId}/topics")
     @JsonView(Views.IdName.class)
     public Topic addTopicToCourse(@PathVariable("courseId") Course course, @RequestBody Topic topic){
         topic.setCourse(course);
         return topicRepo.save(topic);
     }
-    @GetMapping("/{teacherId}/courses/{courseId}/topics")
+    @GetMapping("/courses/{courseId}/topics")
     @JsonView(Views.IdName.class)
     public List<Topic> getCourseTopics(@PathVariable("courseId") Long courseId){
         return topicRepo.getTopicsByCourseId(courseId);
     }
-    @PutMapping("/{teacherId}/courses/{courseId}/topics/{topicId}")
+    @PutMapping("/courses/{courseId}/topics/{topicId}")
     @JsonView(Views.IdName.class)
     public Topic getCourseTopics(@PathVariable("topicId") Topic topicFromDb, @RequestBody Topic topic){
         topicFromDb.setTitle(topic.getTitle());
@@ -41,15 +41,13 @@ public class TopicController {
         return topicRepo.save(topicFromDb);
     }
 
-    @DeleteMapping("/{teacherId}/courses/{courseId}/topics/{topicId}")
+    @DeleteMapping("/courses/{courseId}/topics/{topicId}")
     public void deleteCourseTopic(@PathVariable("topicId") Topic topic){
         topicRepo.delete(topic);
     }
 
-    @PutMapping("/{teacherId}/courses/{courseId}/topics")
+    @PutMapping("/courses/{courseId}/topics")
     public void swapTopics(@RequestBody SwapTopics swapTopics){
-
-
         Topic firstTopic = topicRepo.findById((long) swapTopics.getFirstTopicId()).get();
         Topic secondTopic = topicRepo.findById((long) swapTopics.getSecondTopicId()).get();
 

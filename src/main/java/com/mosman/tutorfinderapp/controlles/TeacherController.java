@@ -19,9 +19,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -38,25 +40,23 @@ public class TeacherController {
     @Autowired
     FilesStorageService storageService;
 
-    @GetMapping("/{teacherId}/courses")
+    @GetMapping("/courses")
     @JsonView(Views.IdName.class)
-    public Set<Course> getCourse(@PathVariable("teacherId") Teacher teacher){
-        return teacher.getCourses();
+    public Set<Course> getCourse(Principal principal){
+        return teacherRepo.findByUsername(principal.getName()).get().getCourses();
     }
 
-    @PostMapping("/{teacherId}/courses")
+    @PostMapping("/courses")
     @JsonView(Views.IdName.class)
     public Course createCourse(
-            @PathVariable("teacherId") Long teacherId,
-            @ModelAttribute CourseDto courseDto
+            @ModelAttribute CourseDto courseDto,
+            Principal principal
     ){
-        return teacherRepo.findById(teacherId).map(teacher -> {
+        return teacherRepo.findByUsername(principal.getName()).map(teacher -> {
             Course newCourse = new Course();
             newCourse.setCourseName(courseDto.getCourseName());
             newCourse.setCourseDesc(courseDto.getCourseDesc());
             newCourse.setTeacher(teacher);
-
-            System.out.println(courseDto);
 
             if (courseDto.getFile() != null){
                 String resultFileName = getResultFileName(courseDto.getFile().getOriginalFilename());
@@ -65,10 +65,10 @@ public class TeacherController {
             }
             return courseRepo.save(newCourse);
 
-        }).orElseThrow(() -> new ResourceNotFoundException("Teacher " + teacherId + " not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Teacher " + principal.getName() + " not found"));
     }
 
-    @PutMapping("/{teacherId}/courses/{courseId}")
+    @PutMapping("/courses/{courseId}")
     @JsonView(Views.IdName.class)
     public Course updateCourse(
             @ModelAttribute CourseDto courseDto,
@@ -79,6 +79,9 @@ public class TeacherController {
         courseFromDb.setCourseDesc(courseDto.getCourseDesc());
 
         if (courseDto.getFile() == null && (courseDto.getCoursePic().equals("") || courseDto.getCoursePic() == null)){
+            if (courseFromDb.getCoursePic() != null){
+                storageService.delete(courseFromDb.getCoursePic());
+            }
             courseFromDb.setCoursePic(null);
         }
         if (courseDto.getFile() != null){
@@ -95,5 +98,17 @@ public class TeacherController {
         String uuidFile = UUID.randomUUID().toString();
         return uuidFile + "." + originalFilename;
     }
+    @DeleteMapping("/courses/{courseId}")
+    public void getCourse(@PathVariable("courseId") Course course) throws IOException {
+        if (course.getCoursePic() != null) {
+            storageService.delete(course.getCoursePic());
+        }
+        courseRepo.delete(course);
+    }
 
 }
+
+
+
+
+

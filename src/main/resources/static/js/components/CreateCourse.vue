@@ -109,21 +109,9 @@
                     formData.append("coursePic", this.courseImg.name)
 
                     if (this.getCurrentCourse.id){
-                        this.updateCourseAction({formData : formData, courseId : this.getCurrentCourse.id}).then(
-                            data => {
-                                this.$store.dispatch('setSnackbarAction', {text : 'Course updated successfully!'});
-                            }, error =>{
-                                this.$store.dispatch('setSnackbarAction', {color : 'error',text : 'Some fields are invalid!'});
-                            }
-                        );
+                        this.updateCourseAction({formData : formData, courseId : this.getCurrentCourse.id})
                     }else {
-                        this.addCourseAction(formData).then(
-                            data => {
-                                this.$store.dispatch('setSnackbarAction', {text : 'Course created successfully!'});
-                            }, error =>{
-                                this.$store.dispatch('setSnackbarAction', {color : 'error',text : 'Some fields are invalid!'});
-                            }
-                        );
+                        this.addCourseAction(formData);
                     }
                 }
             }

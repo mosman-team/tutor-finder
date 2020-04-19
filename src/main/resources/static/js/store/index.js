@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { auth } from './auth.module';
 import {teacherCourse} from "./teacher-course.module";
 import {courseTopics} from './course-topics.module'
+import {course} from "./course.module";
 import createPersistedState from "vuex-persistedstate";
 
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     modules: {
         auth:auth,
         teacherCourse:teacherCourse,
-        courseTopics:courseTopics
+        courseTopics:courseTopics,
+        course : course
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,

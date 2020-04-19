@@ -10,34 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/*
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
     private CourseRepo courseRepo;
 
-    @GetMapping("/{id}")
-    public Course getOne(@PathVariable("id") Course course){
-        return course;
-    }
 
-    @GetMapping
-    public List<Course> getAllCourses(){
-        return courseRepo.findAll();
-    }
-
-    // Student
-
-    @GetMapping("/student/{id}")
-    public Course getStudentCourses(){
-        return null;
-    }
 
 
 }
-*/
 
 
 
