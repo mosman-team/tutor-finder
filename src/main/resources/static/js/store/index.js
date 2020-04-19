@@ -5,6 +5,7 @@ import { auth } from './auth.module';
 import {teacherCourse} from "./teacher-course.module";
 import {courseTopics} from './course-topics.module';
 import {courseInfo} from './course-info.module';
+import {course} from "./course.module";
 import createPersistedState from "vuex-persistedstate";
 
 
@@ -31,6 +32,7 @@ export default new Vuex.Store({
         auth:auth,
         teacherCourse:teacherCourse,
         courseTopics:courseTopics,
+        course : course,
         courseInfo: courseInfo,
     },
     plugins: [createPersistedState({

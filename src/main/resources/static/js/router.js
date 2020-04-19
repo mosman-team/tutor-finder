@@ -8,6 +8,8 @@ import BoardStudent from "./views/BoardStudent.vue";
 import BoardTeacher from "./views/BoardTeacher.vue";
 import AddCourse from "./views/AddCourse.vue";
 import SetCourseTopics from "./components/SetCourseTopics.vue";
+import MyCourses from "./views/teacher/MyCourses.vue";
+import CourseInfo from "./views/CourseInfo.vue";
 
 Vue.use(Router);
 
@@ -56,7 +58,17 @@ export const router = new Router({
             name : 'setCourseTopics',
             component : SetCourseTopics,
         },
-
+        {
+            path : '/my-courses',
+            name : 'myCourses',
+            component : MyCourses,
+        },
+        {
+            path : '/course-info/:id',
+            name : 'courseInfo',
+            component : CourseInfo,
+            props: true
+        }
     ]
 });
 

@@ -83,7 +83,7 @@
                 drawer : false,
                 links : [
                     {icon : 'home', text : 'Home', route : '/'},
-                    {icon : 'folder', text : 'My Courses', route : '/courses'},
+                    {icon : 'folder', text : 'My Courses', route : '/my-courses'},
                     {icon : 'library_add', text : 'Add New Course', route : '/add-course'},
                     {icon : 'mdi-email', text : 'New Messages', route : '/messages'},
                 ]
