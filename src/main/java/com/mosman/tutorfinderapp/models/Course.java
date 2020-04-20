@@ -33,7 +33,7 @@ public class Course {
     @ManyToMany(mappedBy = "enrolledCourses")
     private Set<Student> students;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private Set<Topic> topics;
 
     // additional info

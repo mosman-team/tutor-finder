@@ -3,21 +3,21 @@
         <v-row justify="center">
             <v-col cols="12" sm="8" md="6" lg="4">
 
-                <p v-if="!getCurrentCourse.id" class="headline text-center green--text text--lighten-2 ma-0">Create Course</p>
+                <v-slider
+                        v-if="renderComponent"
+                        :key="courseAddStage"
+                        class="font-weight-light"
+                        v-model="courseAddStage"
+                        :tick-labels="seasons"
 
-                <v-slider v-if="getCurrentCourse.id"
-                          class="font-weight-light"
-                          v-model="courseAddStage"
-                          :tick-labels="seasons"
+                        :color="'light-green lighten-2'"
+                        :track-color="'indigo lighten-4'"
+                        thumb-label="always"
 
-                          :color="'light-green lighten-2'"
-                          :track-color="'indigo lighten-4'"
-                          thumb-label="always"
-
-                          :max="2"
-                          step="1"
-                          ticks="always"
-                          tick-size="3"
+                        :max="2"
+                        step="1"
+                        ticks="always"
+                        tick-size="3"
                 >
                     <template v-slot:thumb-label="props">
                         <v-icon dark>
@@ -35,7 +35,7 @@
 
             <v-col cols="12" sm="10" md="8" lg="6">
 
-                <component :is="component"></component>
+                <component :setVisited="setVisited" :is="component"></component>
 
             </v-col>
         </v-row>
@@ -64,7 +64,7 @@
                     'set-course-info'
                 ],
                 seasons: [
-                    'Edit',
+                    'Create',
                     'Set Course Topics',
                     'Info',
                 ],
@@ -73,33 +73,58 @@
                     'note_add',
                     'info'
                 ],
-                courseAddStage: 0
+                courseAddStage: 0,
+                renderComponent: true,
+                visited: [true, false, false]
             }
         },
-        computed : mapGetters(["getCurrentCourse"]),
+        computed : mapGetters(["getCurrentCourse", "getInfo"]),
         watch : {
-            'getCurrentCourse.id'(newVal){
-                if (newVal !== null){
-                    this.courseAddStage = 1
+
+            courseAddStage(newVal, oldVal){
+
+                if (!this.visited[newVal]){
+                    this.setCourseAddStage(oldVal)
+                    this.forceRerender()
                 }
-            },
-            courseAddStage(){
+
                 this.component = this.addCourseComponents[this.courseAddStage]
+
             }
         },
         methods: {
             ...mapMutations(['emptyCourseMutation', 'emptyCourseInfoMutation']),
             season (val) {
                 return this.icons[val]
+            },
+            setCourseAddStage(v){
+                this.courseAddStage = v
+            },
+            forceRerender() {
+                // Remove my-component from the DOM
+                this.renderComponent = false;
+
+                this.$nextTick(() => {
+                    // Add the component back in
+                    this.renderComponent = true;
+                });
+            },
+            setVisited(index, b){
+                this.visited[index] = b
+            }
+        },
+        created() {
+            if (this.getCurrentCourse.id){
+                this.setVisited(1, true)
+            }
+            if (this.getInfo.id){
+                this.setVisited(2, true)
             }
         },
         beforeDestroy() {
             this.emptyCourseInfoMutation();
             this.emptyCourseMutation();
             sessionStorage.clear();
-        },
-        $route(to, from) {
-            console.log('hello world');
         }
     }
 </script>
