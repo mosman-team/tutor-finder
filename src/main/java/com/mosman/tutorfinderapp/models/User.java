@@ -1,6 +1,8 @@
 package com.mosman.tutorfinderapp.models;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,15 +20,18 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.IdName.class)
     private Long id;
 
     @NotBlank
     @Size(max = 20)
+    @JsonView(Views.IdName.class)
     private String username;
 
     @NotBlank
     @Size(max = 50)
     @Email
+    @JsonView(Views.IdName.class)
     private String email;
 
     @NotBlank

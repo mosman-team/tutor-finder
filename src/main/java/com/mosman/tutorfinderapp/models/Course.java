@@ -2,6 +2,7 @@ package com.mosman.tutorfinderapp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
+    @JsonView(Views.CourseWithTeacher.class)
     private Teacher teacher;
 
     @ManyToMany(mappedBy = "enrolledCourses")
@@ -36,7 +38,6 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private Set<Topic> topics;
 
-    // additional info
     @JsonView(Views.FullInfo.class)
     private String city;
     @JsonView(Views.FullInfo.class)
@@ -50,8 +51,8 @@ public class Course {
     @ElementCollection
     private List<String> keyWords = new ArrayList<String>();
 
-
     public Course() {
+
     }
 
     public Long getId() {

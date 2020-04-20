@@ -1,16 +1,14 @@
 package com.mosman.tutorfinderapp.models;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Teacher extends User{
 
     @OneToMany(mappedBy = "teacher")
-    private Set<Course> courses;
+    private List<Course> courses;
 
     public Teacher() {
 
@@ -19,7 +17,7 @@ public class Teacher extends User{
     public Teacher(String username, String email, String password) {
         super(username, email, password);
     }
-    public Teacher(String username, String email, String password, Set<Course> courses) {
+    public Teacher(String username, String email, String password, List<Course> courses) {
         super(username, email, password);
         this.courses = courses;
     }
@@ -28,11 +26,11 @@ public class Teacher extends User{
         courses.add(course);
     }
 
-    public Set<Course> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(Set<Course> courses) {
+    public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 }

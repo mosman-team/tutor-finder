@@ -81,17 +81,25 @@
         data(){
             return {
                 drawer : false,
-                links : [
-                    {icon : 'home', text : 'Home', route : '/'},
-                    {icon : 'folder', text : 'My Courses', route : '/my-courses'},
-                    {icon : 'library_add', text : 'Add New Course', route : '/add-course'},
-                    {icon : 'mdi-email', text : 'New Messages', route : '/messages'},
-                ]
+
             }
         },
         computed: {
             currentUser() {
                 return this.$store.state.auth.user;
+            },
+            links : function () {
+                const links = [
+                    {icon : 'home', text : 'Home', route : '/'},
+                    {icon : 'mdi-email', text : 'New Messages', route : '/messages'},
+                ]
+                if (this.currentUser.roles.includes('ROLE_TEACHER')){
+                    links.push({icon : 'folder', text : 'My Courses', route : '/my-courses'})
+                    links.push({icon : 'library_add', text : 'Add New Course', route : '/add-course'})
+                }else if(this.currentUser.roles.includes('ROLE_STUDENT')){
+                    links.push({icon : 'folder', text : 'Courses', route : '/all-courses'})
+                }
+                return links
             }
         },
         methods: {

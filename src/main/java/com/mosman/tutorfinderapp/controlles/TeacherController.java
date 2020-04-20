@@ -1,29 +1,22 @@
 package com.mosman.tutorfinderapp.controlles;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mosman.tutorfinderapp.dtos.CourseAdditionalInfo;
 import com.mosman.tutorfinderapp.dtos.CourseDto;
 import com.mosman.tutorfinderapp.exception.ResourceNotFoundException;
 import com.mosman.tutorfinderapp.models.Course;
-import com.mosman.tutorfinderapp.models.Teacher;
-import com.mosman.tutorfinderapp.models.Topic;
 import com.mosman.tutorfinderapp.models.Views;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
-import com.mosman.tutorfinderapp.repos.TopicRepo;
 import com.mosman.tutorfinderapp.services.file_upload.FilesStorageService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/teachers") ///{teacherId}/course
@@ -41,7 +34,7 @@ public class TeacherController {
 
     @GetMapping("/courses")
     @JsonView(Views.IdName.class)
-    public Set<Course> getCourse(Principal principal){
+    public List<Course> getCourse(Principal principal){
         return teacherRepo.findByUsername(principal.getName()).get().getCourses();
     }
 

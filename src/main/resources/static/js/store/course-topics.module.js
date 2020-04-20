@@ -4,7 +4,7 @@ import Course from "../models/Course";
 
 import {displaySnackbar} from "../services/helper-functions";
 
-const API_URL = 'http://localhost:8080/teachers';
+const API_URL = 'http://localhost:8080';
 
 export const courseTopics = {
 
@@ -12,8 +12,8 @@ export const courseTopics = {
         topics : []
     },
     actions : {
-        fetchTopicsAction({commit, dispatch}){
-            let courseId = JSON.parse(sessionStorage.getItem("vuex_tc")).teacherCourse.currentCourse.id
+        fetchTopicsAction({commit, dispatch}, id){
+            let courseId = id || JSON.parse(sessionStorage.getItem("vuex_tc")).teacherCourse.currentCourse.id
             axios.get(API_URL +"/courses/"+courseId+"/topics",
                 {
                     headers: {
