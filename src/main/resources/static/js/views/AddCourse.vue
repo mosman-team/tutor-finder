@@ -1,10 +1,12 @@
 <template>
     <v-container>
         <v-row justify="center">
-            <v-col cols="12" sm="8" md="6" lg="4">
+            <v-col cols="12" sm="8" md="6" lg="4" class="pb-0">
+
+                <p v-if="!getCurrentCourse.id" class="headline text-center green--text lighten-2 ma-0 pb-0">Create Course</p>
 
                 <v-slider
-                        v-if="renderComponent"
+                        v-if="getCurrentCourse.id"
                         :key="courseAddStage"
                         class="font-weight-light"
                         v-model="courseAddStage"
@@ -35,7 +37,7 @@
 
             <v-col cols="12" sm="10" md="8" lg="6">
 
-                <component :setVisited="setVisited" :is="component"></component>
+                <component :is="component"></component>
 
             </v-col>
         </v-row>
@@ -64,7 +66,7 @@
                     'set-course-info'
                 ],
                 seasons: [
-                    'Create',
+                    'Edit',
                     'Set Course Topics',
                     'Info',
                 ],
@@ -74,56 +76,25 @@
                     'info'
                 ],
                 courseAddStage: 0,
-                renderComponent: true,
-                visited: [true, false, false]
             }
         },
-        computed : mapGetters(["getCurrentCourse", "getInfo"]),
+        computed : mapGetters(["getCurrentCourse"]),
         watch : {
 
-            courseAddStage(newVal, oldVal){
-
-                if (!this.visited[newVal]){
-                    this.setCourseAddStage(oldVal)
-                    this.forceRerender()
-                }
-
+            courseAddStage(){
                 this.component = this.addCourseComponents[this.courseAddStage]
-
             }
         },
         methods: {
-            ...mapMutations(['emptyCourseMutation', 'emptyCourseInfoMutation']),
+            ...mapMutations(['emptyCourseMutation']),
             season (val) {
                 return this.icons[val]
             },
-            setCourseAddStage(v){
-                this.courseAddStage = v
-            },
-            forceRerender() {
-                // Remove my-component from the DOM
-                this.renderComponent = false;
 
-                this.$nextTick(() => {
-                    // Add the component back in
-                    this.renderComponent = true;
-                });
-            },
-            setVisited(index, b){
-                this.visited[index] = b
-            }
         },
-        created() {
-            if (this.getCurrentCourse.id){
-                this.setVisited(1, true)
-            }
-            if (this.getInfo.id){
-                this.setVisited(2, true)
-            }
-        },
+
         beforeDestroy() {
-            this.emptyCourseInfoMutation();
-            this.emptyCourseMutation();
+            this.emptyCourseMutation()
             sessionStorage.clear();
         }
     }

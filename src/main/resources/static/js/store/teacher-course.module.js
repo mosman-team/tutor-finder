@@ -3,13 +3,15 @@ import authHeader from "../services/auth-header";
 import Course from "../models/Course";
 
 import {displaySnackbar} from "../services/helper-functions";
+import {router} from "../router";
 
 const API_URL = 'http://localhost:8080/teachers';
 
 export const teacherCourse = {
 
     state : {
-        currentCourse : new Course(null, '', '', '')
+        currentCourse : new Course(null, '',
+            '', '', '', '', '', null)
     },
     actions : {
         addCourseAction({commit, dispatch}, formData){
@@ -45,6 +47,40 @@ export const teacherCourse = {
                     displaySnackbar(dispatch, {color : 'error',text : 'Some fields are invalid!'})
                 }
             );
+        },
+        // info
+        addInfoAction({commit, dispatch}, data){
+
+            axios.post(API_URL + "/courses/" + data.courseId, data.info,
+                {
+                    headers: {
+                        "Authorization" : authHeader().Authorization,
+                    }
+                }
+            ).then(
+                response => {
+                    displaySnackbar(dispatch, {text: 'Course info submitted successfully!'});
+                },
+                error => {
+                    displaySnackbar(dispatch, {color: 'red', text: 'Some error occurred!'});
+                }
+            );
+        },
+        // get full course
+        getCourseDataAction({commit, dispatch}, id){
+
+            axios.get(API_URL + "/courses/" + id, {
+                headers: {
+                    "Authorization" : authHeader().Authorization,
+                }
+            }).then(
+                response => {
+                    commit('setCurrentCourseMutation', response.data);
+                },
+                error => {
+                }
+            )
+
         }
     },
     mutations : {
@@ -52,14 +88,22 @@ export const teacherCourse = {
             state.currentCourse = course;
         },
         emptyCourseMutation(state){
-            state.currentCourse = new Course(null, '', '', '')
+            state.currentCourse = new Course(null, '',
+                '', '', '', '', '', null);
         },
         setCourseImgNameMutation(state, imgName){
             state.currentCourse.coursePic = imgName;
         },
         setCurrentCourseMutation(state,data){
-            state.currentCourse = data.course
-        }
+            state.currentCourse = data
+        },
+        // info
+        removeFromKeyWordsMutation(state, keyWord){
+            const index = state.info.keyWords.indexOf(keyWord);
+            if (index > -1) {
+                state.info.keyWords.splice(index, 1);
+            }
+        },
     },
     getters : {
         getCurrentCourse(state){

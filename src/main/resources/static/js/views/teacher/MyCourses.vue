@@ -31,11 +31,11 @@
         },
         computed : mapGetters(['getCourses']),
         methods : {
-            ...mapActions(['fetchCoursesAction', 'deleteCourseAction']),
+            ...mapActions(['fetchCoursesAction', 'deleteCourseAction', 'getCourseDataAction']),
             ...mapMutations(['setCurrentCourseMutation']),
 
             editCourse(index){
-                this.setCurrentCourseMutation({course : this.getCourses[index]});
+                this.getCourseDataAction(this.getCourses[index].id);
                 router.push("/add-course")
             },
             viewCourse(){

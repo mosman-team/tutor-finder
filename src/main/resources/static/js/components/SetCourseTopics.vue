@@ -84,27 +84,9 @@
                 ]
             }
         },
-        props: [
-            'setVisited'
-        ],
-        watch : {
-              'getCourseTopics.length'(){
-                  if (this.getCourseTopics.length >= 3){
-                      this.setVisited(2, true)
-                  }else{
-                      this.setVisited(2, false)
-                  }
-              }
-        },
         computed : mapGetters(['getCourseTopics', 'getCurrentCourse']),
         created() {
             this.fetchTopicsAction()
-
-            if (this.getCourseTopics.length >= 3){
-                this.setVisited(2, true)
-            }else {
-                this.setVisited(2, false)
-            }
         },
         methods: {
             ...mapActions(['addTopicAction', 'fetchTopicsAction', 'deleteTopicAction', 'updateTopicAction', 'swapTopicsAction']),

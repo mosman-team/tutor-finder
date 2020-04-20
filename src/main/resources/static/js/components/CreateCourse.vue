@@ -76,15 +76,7 @@
                 }
             }
         },
-        props: [
-            'setVisited'
-        ],
-        watch: {
-            'getCurrentCourse.id'() {
-                console.log(this.getCurrentCourse.id);
-                this.setVisited(1, true)
-            }
-        },
+
         methods: {
             ...mapActions(['addCourseAction', 'updateCourseAction']),
             ...mapMutations(['setCourseImgNameMutation']),

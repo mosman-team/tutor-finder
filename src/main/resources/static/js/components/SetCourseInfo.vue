@@ -4,7 +4,7 @@
             <v-card-text>
                 <div>
                     <v-autocomplete
-                            v-model="getInfo.city"
+                            v-model="getCurrentCourse.city"
                             :items="options"
                             dense
                             outlined
@@ -20,7 +20,7 @@
                             ref="title"
                             label="Адрес"
                             placeholder="просп. Абая 151"
-                            v-model="getInfo.address"
+                            v-model="getCurrentCourse.address"
                             required
                             :rules="addressRules"
                     >
@@ -30,7 +30,7 @@
                 <div class="price-for-month">
                     <img src="/static/img/tenge.png" alt="" id="price-image">
                     <v-text-field
-                            v-model="getInfo.price"
+                            v-model="getCurrentCourse.price"
                             label="Цена за Месяц"
                             placeholder="0"
                             required
@@ -41,7 +41,7 @@
                 <div>
                     <header>Язык обучения</header>
                     <v-radio-group class="ma-1"
-                                   v-model="getInfo.language"
+                                   v-model="getCurrentCourse.language"
                                    :rules="languageRules"
                                    required
                     >
@@ -57,7 +57,7 @@
                 <div>
                     <span class="label">Клювевые слова по которым студенты смогут найти ваш курс</span>
                     <v-combobox
-                            v-model="getInfo.keyWords"
+                            v-model="getCurrentCourse.keyWords"
                             chips
                             clearable
                             label="key words"
@@ -85,7 +85,6 @@
                 <v-btn color="error" text @click="resetForm">Reset Form</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" text type="submit" :disabled="!valid">Submit</v-btn>
-                <v-btn v-if="getInfo.id" class="ma-2" tile color="indigo" dark @click="finish">Закончить!</v-btn>
             </v-card-actions>
 
         </v-card>
@@ -99,9 +98,7 @@
     export default {
         name: "SetCourseInfo",
         components: {},
-        props: [
-            'changeCourseStage'
-        ],
+
         data: function () {
             return {
                 submitted: false,
@@ -216,34 +213,37 @@
                 ],
             };
         },
-        computed: mapGetters(['getCurrentCourse', 'getInfo']),
+        computed: mapGetters(['getCurrentCourse']),
         methods: {
-            ...mapMutations(['courseCreationProcedureFinished', 'removeFromKeyWords']),
+            ...mapMutations(['removeFromKeyWordsMutation']),
             ...mapActions(['addInfoAction']),
             finishCreateCourse() {
-                this.courseCreationProcedureFinished();
                 this.$router.push('/courses');
             },
             remove(item) {
-                const index = this.getInfo.keyWords.indexOf(item);
+                const index = this.getCurrentCourse.keyWords.indexOf(item);
                 if (index > -1) {
-                    this.getInfo.keyWords.splice(index, 1);
+                    this.getCurrentCourse.keyWords.splice(index, 1);
                 }
             },
             resetForm() {
                 this.$refs.form.reset()
             },
-            finish(){
-                this.$router.push('/profile');
-            },
             submitHandler() {
 
                 if (this.$refs.form.validate()) {
-                        console.log('add');
+
                         const data = {
                             courseId: this.getCurrentCourse.id,
-                            info: this.getInfo
+                            info : {
+                                city: this.getCurrentCourse.city,
+                                address: this.getCurrentCourse.address,
+                                price: this.getCurrentCourse.price,
+                                language: this.getCurrentCourse.language,
+                                keyWords: this.getCurrentCourse.keyWords
+                            }
                         }
+
                         this.addInfoAction(data);
                 }
 

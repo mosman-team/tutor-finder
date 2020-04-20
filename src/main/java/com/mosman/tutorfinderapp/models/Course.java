@@ -37,11 +37,16 @@ public class Course {
     private Set<Topic> topics;
 
     // additional info
+    @JsonView(Views.FullInfo.class)
     private String city;
+    @JsonView(Views.FullInfo.class)
     private String address;
+    @JsonView(Views.FullInfo.class)
     private Long price;
+    @JsonView(Views.FullInfo.class)
     private String language;
 
+    @JsonView(Views.FullInfo.class)
     @ElementCollection
     private List<String> keyWords = new ArrayList<String>();
 

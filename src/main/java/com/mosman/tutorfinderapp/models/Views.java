@@ -6,5 +6,6 @@ public final class Views {
 
     public interface IdName extends Id{ }
 
+    public interface FullInfo extends IdName {}
 
 }

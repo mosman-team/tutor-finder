@@ -3,6 +3,7 @@ package com.mosman.tutorfinderapp.controlles;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mosman.tutorfinderapp.dtos.CourseAdditionalInfo;
 import com.mosman.tutorfinderapp.dtos.CourseDto;
 import com.mosman.tutorfinderapp.exception.ResourceNotFoundException;
 import com.mosman.tutorfinderapp.models.Course;
@@ -18,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -99,11 +98,31 @@ public class TeacherController {
         return uuidFile + "." + originalFilename;
     }
     @DeleteMapping("/courses/{courseId}")
-    public void getCourse(@PathVariable("courseId") Course course) throws IOException {
+    public void deleteCourse(@PathVariable("courseId") Course course) throws IOException {
         if (course.getCoursePic() != null) {
             storageService.delete(course.getCoursePic());
         }
         courseRepo.delete(course);
+    }
+
+    // info
+    @PostMapping("/courses/{courseId}")
+    public void addInfoToCourse(
+            @PathVariable("courseId") Course course, @RequestBody CourseAdditionalInfo cInfo){
+
+        course.setCity(cInfo.getCity());
+        course.setAddress(cInfo.getAddress());
+        course.setPrice(cInfo.getPrice());
+        course.setLanguage(cInfo.getLanguage());
+        course.setKeyWords(cInfo.getKeyWords());
+
+        courseRepo.save(course);
+    }
+
+    @GetMapping("/courses/{courseId}")
+    @JsonView(Views.FullInfo.class)
+    public Course getCourse(@PathVariable("courseId") Course course){
+        return course;
     }
 
 }
