@@ -2,9 +2,10 @@ package com.mosman.tutorfinderapp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,15 +29,30 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
+    @JsonView(Views.CourseWithTeacher.class)
     private Teacher teacher;
 
     @ManyToMany(mappedBy = "enrolledCourses")
     private Set<Student> students;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private Set<Topic> topics;
 
+    @JsonView(Views.FullInfo.class)
+    private String city;
+    @JsonView(Views.FullInfo.class)
+    private String address;
+    @JsonView(Views.FullInfo.class)
+    private Long price;
+    @JsonView(Views.FullInfo.class)
+    private String language;
+
+    @JsonView(Views.FullInfo.class)
+    @ElementCollection
+    private List<String> keyWords = new ArrayList<String>();
+
     public Course() {
+
     }
 
     public Long getId() {
@@ -93,5 +109,45 @@ public class Course {
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<String> getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(List<String> keyWords) {
+        this.keyWords = keyWords;
     }
 }

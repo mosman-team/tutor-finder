@@ -114,7 +114,6 @@
             },
             submitHandler () {
                 if (this.$refs.form.validate()){
-                    console.log(this.topic)
                     if (this.topic.id){
                         this.updateTopicAction({ topic : this.topic, courseId : this.getCurrentCourse.id})
                         this.selectedTopic = null
@@ -124,10 +123,6 @@
                     this.resetTopicInForm()
                     this.resetForm()
                 }
-            },
-            swap(i, j){
-                this.swapTopicsAction({firstTopicId : this.getCourseTopics[i].id,
-                    secondTopicId : this.getCourseTopics[j].id, courseId : this.getCurrentCourse.id})
             }
         }
     }

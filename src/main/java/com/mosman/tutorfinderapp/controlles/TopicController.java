@@ -15,13 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/teachers") ///{teacherId}/course
-@PreAuthorize("hasRole('TEACHER')")
 public class TopicController {
 
     @Autowired
     private TopicRepo topicRepo;
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/courses/{courseId}/topics")
     @JsonView(Views.IdName.class)
     public Topic addTopicToCourse(@PathVariable("courseId") Course course, @RequestBody Topic topic){
@@ -33,6 +32,7 @@ public class TopicController {
     public List<Topic> getCourseTopics(@PathVariable("courseId") Long courseId){
         return topicRepo.getTopicsByCourseId(courseId);
     }
+    @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/courses/{courseId}/topics/{topicId}")
     @JsonView(Views.IdName.class)
     public Topic getCourseTopics(@PathVariable("topicId") Topic topicFromDb, @RequestBody Topic topic){
@@ -40,7 +40,7 @@ public class TopicController {
         topicFromDb.setHours(topic.getHours());
         return topicRepo.save(topicFromDb);
     }
-
+    @PreAuthorize("hasRole('TEACHER')")
     @DeleteMapping("/courses/{courseId}/topics/{topicId}")
     public void deleteCourseTopic(@PathVariable("topicId") Topic topic){
         topicRepo.delete(topic);

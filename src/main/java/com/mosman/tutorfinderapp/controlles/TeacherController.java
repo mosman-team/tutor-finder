@@ -42,7 +42,7 @@ public class TeacherController {
 
     @GetMapping("/courses")
     @JsonView(Views.IdName.class)
-    public Set<Course> getCourse(Principal principal){
+    public List<Course> getCourse(Principal principal){
         return teacherRepo.findByUsername(principal.getName()).get().getCourses();
     }
 
@@ -99,7 +99,7 @@ public class TeacherController {
         return uuidFile + "." + originalFilename;
     }
     @DeleteMapping("/courses/{courseId}")
-    public void getCourse(@PathVariable("courseId") Course course) throws IOException {
+    public void deleteCourse(@PathVariable("courseId") Course course) throws IOException {
         if (course.getCoursePic() != null) {
             storageService.delete(course.getCoursePic());
         }
