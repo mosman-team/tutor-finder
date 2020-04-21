@@ -90,8 +90,34 @@ export const course = {
                     displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})
                 }
             )
-        }
+        },
+        // student actions
+        filterCoursesAndFetchAction({commit,dispatch}, data){
 
+            axios.post(API_URL + "/courses/filter", data,{
+                headers: {"Authorization" : authHeader().Authorization}
+            }).then(
+                response => {
+                    commit('fetchCoursesMutation', response.data)
+                }, error =>{
+                    displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})
+                }
+            )
+
+        },
+        searchCoursesAndFetchAction({commit,dispatch}, search){
+
+            axios.post(API_URL + "/courses/search", search,{
+                headers: {"Authorization" : authHeader().Authorization}
+            }).then(
+                response => {
+                    commit('fetchCoursesMutation', response.data)
+                }, error =>{
+                    displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})
+                }
+            )
+
+        }
     },
     mutations : {
         fetchCoursesMutation(state, courses){
@@ -112,7 +138,6 @@ export const course = {
         fetchAllCoursesMutation(state, courses){
             state.courses = courses
         }
-
     },
     getters : {
         getCourses(state){

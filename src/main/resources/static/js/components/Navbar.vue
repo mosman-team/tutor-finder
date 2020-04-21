@@ -56,7 +56,6 @@
                     </p>
                 </v-flex>
 
-
             </v-layout>
 
             <v-list>
@@ -77,7 +76,6 @@
 
 <script>
     export default {
-
         data(){
             return {
                 drawer : false,
@@ -98,6 +96,7 @@
                     links.push({icon : 'library_add', text : 'Add New Course', route : '/add-course'})
                 }else if(this.currentUser.roles.includes('ROLE_STUDENT')){
                     links.push({icon : 'folder', text : 'Courses', route : '/all-courses'})
+                    links.push({icon: 'filter_list', text: 'Filter', route: '/filter-courses'})
                 }
                 return links
             }

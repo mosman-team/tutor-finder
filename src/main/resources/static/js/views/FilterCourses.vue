@@ -1,0 +1,252 @@
+<template>
+
+    <div>
+        <v-row justify="center">
+            <v-col cols="12" sm="10" md="8" lg="6">
+
+                <v-form ref="form" @submit.prevent="submitHandler" v-model="valid" :lazy-validation="lazy">
+                    <v-card class="pa-2">
+                        <v-card-text>
+                            <div>
+                                <v-autocomplete
+                                        v-model="city"
+                                        :items="options"
+                                        dense
+                                        outlined
+                                        label="Выберите город"
+                                        placeholder="Шымкент"
+                                        :rules="cityRules"
+                                        required
+                                ></v-autocomplete>
+                            </div>
+
+                            <div class="price-for-month">
+                                <img src="/static/img/tenge.png" alt="" id="price-image">
+                                <v-text-field
+                                        v-model="price"
+                                        label="Maximum amount you are able to pay"
+                                        placeholder="0"
+                                        required
+                                        :rules="priceRules"
+                                ></v-text-field>
+                            </div>
+
+                            <div>
+                                <header>Язык обучения</header>
+                                <v-radio-group class="ma-1"
+                                               v-model="language"
+                                               :rules="languageRules"
+                                               required
+                                >
+                                    <v-radio
+                                            v-for="n in languages"
+                                            :key="n"
+                                            :label="`${n}`"
+                                            :value="n"
+                                    ></v-radio>
+                                </v-radio-group>
+                            </div>
+
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn color="error" text @click="resetForm">Reset Form</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text type="submit" :disabled="!valid">Filter</v-btn>
+                        </v-card-actions>
+
+                    </v-card>
+                </v-form>
+            </v-col>
+        </v-row>
+
+        <v-row justify="center">
+            <v-col cols="12" sm="10" md="8" lg="6">
+                <div class="headline legend grey--text text--darken-1">
+                    Available courses
+                </div>
+
+                <div class="courses">
+                    <div v-for="(course, i) in getCourses" :key="i" class="course">
+                        <student-course
+                                :course="course">
+                        </student-course>
+                    </div>
+                </div>
+
+            </v-col>
+        </v-row>
+    </div>
+
+</template>
+
+<script>
+    import {mapActions, mapGetters} from 'vuex';
+
+    import StudentCourse from "../components/StudentCourse.vue";
+
+    export default {
+        name: "FilterCourses",
+        components: {
+            StudentCourse
+        },
+
+        data: function () {
+            return {
+                city: '',
+                price: '',
+                language: '',
+
+                submitted: false,
+                options: ["Алма-Ата (Алматы)",
+                    "Нур-Султан",
+                    "Шымкент",
+                    "Актобе",
+                    "Караганда",
+                    "Тараз",
+                    "Павлодар",
+                    "Усть-Каменогорск",
+                    "Семей",
+                    "Атырау",
+                    "Костанай",
+                    "Кызылорда",
+                    "Уральск",
+                    "Петропавловск",
+                    "Актау",
+                    "Темиртау",
+                    "Туркестан",
+                    "Талдыкорган",
+                    "Кокшетау",
+                    "Экибастуз",
+                    "Рудный",
+                    "Жезказган",
+                    "Жанаозен",
+                    "Балхаш",
+                    "Кентау",
+                    "Каскелен",
+                    "Сатпаев",
+                    "Кульсары",
+                    "Риддер",
+                    "Щучинск",
+                    "Степногорск",
+                    "Капшагай",
+                    "Арыс",
+                    "Сарань",
+                    "Талгар",
+                    "Жаркент",
+                    "Аксу",
+                    "Байконур (Байконыр)",
+                    "Аягоз",
+                    "Шахтинск",
+                    "Шу",
+                    "Алтай",
+                    "Лисаковск",
+                    "Кандыагаш",
+                    "Аксай",
+                    "Житикара",
+                    "Аральск",
+                    "Есик",
+                    "Сарыагаш",
+                    "Текели",
+                    "Каратау",
+                    "Атбасар",
+                    "Шардара",
+                    "Абай",
+                    "Аркалык",
+                    "Шалкар",
+                    "Хромтау",
+                    "Ленгер",
+                    "Жетысай",
+                    "Уштобе",
+                    "Жанатас",
+                    "Алга",
+                    "Шемонаиха",
+                    "Макинск",
+                    "Ушарал",
+                    "Зайсан",
+                    "Акколь",
+                    "Приозёрск",
+                    "Курчатов",
+                    "Эмба",
+                    "Тайынша",
+                    "Сарканд",
+                    "Есиль",
+                    "Ерейментау",
+                    "Серебрянск",
+                    "Каркаралинск",
+                    "Каражал",
+                    "Булаево",
+                    "Сергеевка",
+                    "Мамлютка",
+                    "Шар",
+                    "Форт-Шевченко",
+                    "Державинск",
+                    "Казалинск",
+                    "Степняк",
+                    "Темир",
+                    "Жем"
+                ],
+                valid: true,
+                lazy: false,
+
+                cityRules: [
+                    v => !!this.options.includes(v) || 'Город должен быть выбран',
+                ],
+                priceRules: [
+                    v => !!v || 'Цена курса должна присутствовать',
+                    v => /^\d+$/.test(v) || 'Значение должно быть цифрой'
+                ],
+                addressRules: [
+                    v => !!v || 'Адрес проведения обучения должен быть выбран'
+                ],
+                languageRules: [
+                    v => !!this.languages.includes(v) || 'Язык обучуния должен быть выбран'
+                ],
+                languages: [
+                    'Казахский',
+                    'Английский',
+                    'Русский'
+                ],
+            };
+        },
+        computed: {
+            ...mapGetters(['getCourses']),
+        },
+
+        methods: {
+            ...mapActions(['filterCoursesAndFetchAction']),
+            resetForm() {
+                this.$refs.form.reset()
+            },
+            submitHandler() {
+                if (this.$refs.form.validate()) {
+                    const dataInfo = {
+                        city: this.city,
+                        price: this.price,
+                        language: this.language,
+                    }
+
+                    this.filterCoursesAndFetchAction(dataInfo);
+
+                }
+            },
+
+        },
+
+    }
+</script>
+
+<style scoped>
+    #price-image{
+        height: 20px;
+    }
+    .price-for-month{
+        display: flex;
+    }
+    .legend {
+        padding-bottom: 10px;
+        border-bottom: 1px solid lightgrey;
+    }
+    .courses{
+        margin-top: 50px;
+    }
+</style>

@@ -58,13 +58,13 @@
                     <span class="label">Клювевые слова по которым студенты смогут найти ваш курс</span>
                     <v-combobox
                             v-model="getCurrentCourse.keyWords"
+                            :items="items"
                             chips
                             clearable
                             label="key words"
                             multiple
                             prepend-icon="filter_list"
                             solo
-                            append-icon=""
                     >
                         <template v-slot:selection="{ attrs, item, select, selected }">
                             <v-chip
@@ -211,6 +211,7 @@
                     'Английский',
                     'Русский'
                 ],
+                items: ['Streaming', 'Eating'],
             };
         },
         computed: mapGetters(['getCurrentCourse']),

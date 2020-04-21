@@ -2,16 +2,18 @@
     <div>
         <v-container>
             <div class="display-1 .font-italic font-weight-light mb-5">My courses</div>
-            <div class="d-flex flex-wrap">
-                <div v-for="(course, i) in getCourses" class="mb-3 mr-3">
-                    <teacher-course
-                         :index = i
-                         :course="course"
-                         :deleteCourseAction="deleteCourseAction"
-                         :editCourse="editCourse">
-                    </teacher-course>
+
+                <div class="courses">
+                    <div v-for="(course, i) in getCourses" :key="i" class="course">
+                        <teacher-course
+                                :index = i
+                                :course="course"
+                                :deleteCourseAction="deleteCourseAction"
+                                :editCourse="editCourse">
+                        </teacher-course>
+                    </div>
                 </div>
-            </div>
+
         </v-container>
     </div>
 </template>
@@ -45,5 +47,16 @@
     }
 </script>
 
-<style scoped>
+<style>
+    .courses{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        margin-left: 25px;
+    }
+    .course{
+        margin-left: 15px;
+        margin-bottom: 25px;
+    }
+
 </style>

@@ -12,6 +12,7 @@ import TeacherCourses from "./views/teacher/TeacherCourses.vue";
 import CourseInfo from "./views/teacher/CourseInfo.vue";
 import StudentCourses from "./views/student/StudentCourses.vue";
 import StudentCourseInfo from "./views/student/StudentCourseInfo.vue";
+import FilterCourses from "./views/FilterCourses.vue";
 
 Vue.use(Router);
 
@@ -81,6 +82,11 @@ export const router = new Router({
             name : 'StudentCourseInfo',
             component : StudentCourseInfo,
             props: true
+        },
+        {
+            path : '/filter-courses',
+            name : 'FilterCourses',
+            component : FilterCourses,
         }
     ]
 });
