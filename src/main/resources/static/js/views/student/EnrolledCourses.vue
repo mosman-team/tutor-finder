@@ -1,7 +1,7 @@
 <template>
 
     <v-container>
-        <div class="display-1 .font-italic font-weight-light mb-5">Available Courses</div>
+        <div class="display-1 .font-italic font-weight-light mb-5">Enrolled Courses</div>
         <div class="d-flex flex-wrap">
             <div v-for="(course, i) in getCourses" class="mb-3 mr-3">
                 <student-course
@@ -32,10 +32,10 @@
             ...mapGetters(['getCourses'])
         },
         created() {
-            this.fetchAllCoursesAction()
+            this.fetchStudentCourses()
         },
         methods : {
-            ...mapActions(['fetchAllCoursesAction'])
+            ...mapActions(['fetchStudentCourses'])
         }
     }
 </script>

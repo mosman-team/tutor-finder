@@ -1,5 +1,4 @@
 <template>
-
     <v-card width="344">
         <v-img
                 :src="'/img/'+course.coursePic"

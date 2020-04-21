@@ -7,6 +7,7 @@
                     <teacher-course
                          :index = i
                          :course="course"
+                         :key="i"
                          :deleteCourseAction="deleteCourseAction"
                          :editCourse="editCourse">
                     </teacher-course>

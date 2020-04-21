@@ -98,6 +98,7 @@
                     links.push({icon : 'library_add', text : 'Add New Course', route : '/add-course'})
                 }else if(this.currentUser.roles.includes('ROLE_STUDENT')){
                     links.push({icon : 'folder', text : 'Courses', route : '/all-courses'})
+                    links.push({icon : 'folder', text : 'Enrolled Courses', route : '/enrolled-courses'})
                 }
                 return links
             }
