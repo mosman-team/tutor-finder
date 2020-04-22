@@ -110,7 +110,7 @@
             },
             profilePage(){
                 // send to teacher profile
-                console.log('teacher profile')
+                this.$router.push({ name: 'UserProfile', params: {id: this.getCourse.teacher.id}})
             }
         }
     }

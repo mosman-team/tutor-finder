@@ -28,8 +28,7 @@
                         close
                         :color="courseImg.color"
                         text-color="white"
-                        @click:close="removeCourseImg"
-                >
+                        @click:close="removeCourseImg">
                     {{courseImg.name}}
                 </v-chip>
             </v-card-text>

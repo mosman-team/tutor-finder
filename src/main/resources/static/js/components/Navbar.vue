@@ -46,11 +46,11 @@
         <v-navigation-drawer app v-model="drawer" class="primary" v-if="currentUser">
             <v-layout column align-center>
                 <v-flex class="mt-5">
-                    <v-avatar size="100px">
-                        <router-link to="/profile">
-                            <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/0055765993ad4582e97bd6b8a37782c126288f33_full.jpg">
-                        </router-link>
-                    </v-avatar>
+                    <router-link to="/profile">
+                        <v-avatar size="100px">
+                                <img class="profileImg" :src="userImg" alt="Avatar">
+                        </v-avatar>
+                    </router-link>
                     <p class="font-weight-black white--text text-center mt-2">
                         {{currentUser.username}}
                     </p>
@@ -76,6 +76,8 @@
 </template>
 
 <script>
+    import UserProfile from "../views/profile/UserProfile.vue";
+
     export default {
 
         data(){
@@ -101,6 +103,12 @@
                     links.push({icon : 'folder', text : 'Enrolled Courses', route : '/enrolled-courses'})
                 }
                 return links
+            },
+            userImg(){
+                if (this.currentUser.img){
+                    return '/img/'+this.currentUser.img
+                }
+                return '/static/img/student.jpg'
             }
         },
         methods: {
@@ -113,11 +121,14 @@
             },
             showProfile() {
                 this.$router.push('/profile');
-            }
+            },
         }
     }
 </script>
 
 <style>
+    .profileImg{
+        width: 50px;
+    }
 
 </style>
