@@ -74,12 +74,17 @@ public class KMP_String_Matching {
             } 
         } 
     } 
-  
-    // Driver program to test above function 
+
+    // Driver program to test above function
     /*public static void main(String args[])
     { 
         String txt = "ABABDABACDABABCABAB"; 
         String pat = "ABABCABAB";
         System.out.println(new KMP_String_Matching().KMPSearch(pat, txt));
-    } */
+
+        int a = 10;
+
+        long b = a;
+
+    }*/
 } 

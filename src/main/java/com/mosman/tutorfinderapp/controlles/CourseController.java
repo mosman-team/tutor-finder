@@ -10,6 +10,7 @@ import com.mosman.tutorfinderapp.payload.response.TeacherWithCourse;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
 import com.mosman.tutorfinderapp.utils.KMP_String_Matching;
+import com.mosman.tutorfinderapp.utils.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +50,17 @@ public class CourseController {
 
         List<Course> filteredCourses = new ArrayList<>();
 
-
         for (Course course: allCourses) {
 
             if (course.getCity() != null){
                 if (course.getCity().equalsIgnoreCase(cinfo.getCity())
-                        && course.getPrice() <= cinfo.getPrice() && course.getLanguage().equalsIgnoreCase(cinfo.getLanguage())){
-                    filteredCourses.add(course);
+                        && course.getPrice() <= cinfo.getPrice()
+                        && course.getLanguage().equalsIgnoreCase(cinfo.getLanguage())
+                ){
+                    if (cinfo.getKeyWords() == null || ListUtil.UnionSize(course.getKeyWords(), cinfo.getKeyWords()) > 0){
+                        filteredCourses.add(course);
+                    }
+
                 }
             }
 

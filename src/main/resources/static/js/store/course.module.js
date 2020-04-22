@@ -48,7 +48,6 @@ export const course = {
                 headers: {"Authorization" : authHeader().Authorization}
             }).then(
                 response => {
-                    console.log(response.data)
                     commit('setCourseAction', response.data)
                 }, error =>{
                     displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})

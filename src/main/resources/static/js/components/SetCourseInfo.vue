@@ -56,7 +56,7 @@
 
                 <div>
                     <span class="label">Клювевые слова по которым студенты смогут найти ваш курс</span>
-                    <v-combobox
+                    <!--<v-combobox
                             v-model="getCurrentCourse.keyWords"
                             :items="items"
                             chips
@@ -77,7 +77,29 @@
                                 <strong>{{ item }}</strong>&nbsp;
                             </v-chip>
                         </template>
-                    </v-combobox>
+                    </v-combobox>-->
+
+                    <v-select
+                            v-model="getCurrentCourse.keyWords"
+                            :items="items"
+                            chips
+                            clearable
+                            label="Choose course category"
+                            multiple
+                            prepend-icon="filter_list"
+                            solo
+                    >
+                        <template v-slot:selection="{ attrs, item, select, selected }">
+                            <v-chip
+                                    v-bind="attrs"
+                                    :input-value="selected"
+                                    @click="select"
+                                    @click:close="remove(item)"
+                            >
+                                <strong>{{ item }}</strong>&nbsp;
+                            </v-chip>
+                        </template>
+                    </v-select>
 
                 </div>
             </v-card-text>
@@ -89,7 +111,6 @@
 
         </v-card>
     </v-form>
-
 </template>
 
 <script>
@@ -211,7 +232,23 @@
                     'Английский',
                     'Русский'
                 ],
-                items: ['Streaming', 'Eating'],
+                items: [
+                    'Business & Management',
+                    'Creative Arts & Media',
+                    'Healthcare & Medicine',
+                    'History',
+                    'IT & Computer Science',
+                    'Language',
+                    'Law',
+                    'Literature',
+                    'Nature & Environment',
+                    'Politics & Society',
+                    'Psychology & Mental Health',
+                    'Science, Engineering & Maths',
+                    'Study Skills',
+                    'Teaching'
+                ],
+
             };
         },
         computed: mapGetters(['getCurrentCourse']),
@@ -244,7 +281,6 @@
                                 keyWords: this.getCurrentCourse.keyWords
                             }
                         }
-
                         this.addInfoAction(data);
                 }
 

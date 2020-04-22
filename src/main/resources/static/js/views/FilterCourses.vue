@@ -47,6 +47,33 @@
                                 </v-radio-group>
                             </div>
 
+                            <div>
+                                <span></span>
+
+                                <v-select
+                                        v-model="categories"
+                                        :items="items"
+                                        chips
+                                        clearable
+                                        label="Choose course category"
+                                        multiple
+                                        prepend-icon="filter_list"
+                                        solo
+                                >
+                                    <template v-slot:selection="{ attrs, item, select, selected }">
+                                        <v-chip
+                                                v-bind="attrs"
+                                                :input-value="selected"
+                                                @click="select"
+                                                @click:close="remove(item)"
+                                        >
+                                            <strong>{{ item }}</strong>&nbsp;
+                                        </v-chip>
+                                    </template>
+                                </v-select>
+
+                            </div>
+
                         </v-card-text>
                         <v-card-actions>
                             <v-btn color="error" text @click="resetForm">Reset Form</v-btn>
@@ -60,7 +87,7 @@
         </v-row>
 
         <v-row justify="center">
-            <v-col cols="12" sm="10" md="8" lg="6">
+            <v-col cols="12" sm="12" md="12" lg="10">
                 <div class="headline legend grey--text text--darken-1">
                     Available courses
                 </div>
@@ -95,7 +122,7 @@
                 city: '',
                 price: '',
                 language: '',
-
+                categories: null,
                 submitted: false,
                 options: ["Алма-Ата (Алматы)",
                     "Нур-Султан",
@@ -206,6 +233,22 @@
                     'Английский',
                     'Русский'
                 ],
+                items: [
+                    'Business & Management',
+                    'Creative Arts & Media',
+                    'Healthcare & Medicine',
+                    'History',
+                    'IT & Computer Science',
+                    'Language',
+                    'Law',
+                    'Literature',
+                    'Nature & Environment',
+                    'Politics & Society',
+                    'Psychology & Mental Health',
+                    'Science, Engineering & Maths',
+                    'Study Skills',
+                    'Teaching'
+                ],
             };
         },
         computed: {
@@ -213,7 +256,7 @@
         },
 
         methods: {
-            ...mapActions(['filterCoursesAndFetchAction']),
+            ...mapActions(['filterCoursesAndFetchAction', 'fetchAllCoursesAction']),
             resetForm() {
                 this.$refs.form.reset()
             },
@@ -223,14 +266,22 @@
                         city: this.city,
                         price: this.price,
                         language: this.language,
+                        keyWords: this.categories
                     }
 
                     this.filterCoursesAndFetchAction(dataInfo);
 
                 }
             },
+            remove (item) {
+                this.categories.splice(this.categories.indexOf(item), 1)
+                this.categories = [...this.categories]
+            },
 
         },
+        created() {
+            this.fetchAllCoursesAction()
+        }
 
     }
 </script>
