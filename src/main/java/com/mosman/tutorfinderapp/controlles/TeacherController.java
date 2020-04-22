@@ -86,7 +86,7 @@ public class TeacherController {
         }
         return courseRepo.save(courseFromDb);
     }
-    private String getResultFileName(String originalFilename){
+    public static String getResultFileName(String originalFilename){
         String uuidFile = UUID.randomUUID().toString();
         return uuidFile + "." + originalFilename;
     }

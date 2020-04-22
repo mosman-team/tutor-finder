@@ -1,6 +1,7 @@
 package com.mosman.tutorfinderapp.controlles;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mosman.tutorfinderapp.models.*;
 import com.mosman.tutorfinderapp.payload.request.LoginRequest;
 import com.mosman.tutorfinderapp.payload.request.SignupRequest;
@@ -76,10 +77,11 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
+        System.out.println(optionalUser.get().getImg());
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
+                optionalUser.get().getImg(),
                 userDetails.getEmail(),
                 roles));
     }
@@ -140,10 +142,7 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         roles.add(teacherRole);
     }
-    @GetMapping("/user")
-    public User getUser(){
-        return userRepo.findById(1L).get();
-    }
+
 
 }
 

@@ -5,17 +5,22 @@ import com.mosman.tutorfinderapp.dtos.CourseAdditionalInfo;
 import com.mosman.tutorfinderapp.models.Course;
 import com.mosman.tutorfinderapp.models.Teacher;
 import com.mosman.tutorfinderapp.models.Topic;
+import com.mosman.tutorfinderapp.models.Student;
 import com.mosman.tutorfinderapp.models.Views;
-import com.mosman.tutorfinderapp.payload.response.TeacherWithCourse;
 import com.mosman.tutorfinderapp.repos.CourseRepo;
 import com.mosman.tutorfinderapp.repos.TeacherRepo;
 import com.mosman.tutorfinderapp.utils.KMP_String_Matching;
 import com.mosman.tutorfinderapp.utils.ListUtil;
+import com.mosman.tutorfinderapp.repos.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -27,10 +32,10 @@ public class CourseController {
     private CourseRepo courseRepo;
 
     @Autowired
-    private TeacherRepo teacherRepo;
+    private StudentRepo studentRepo;
 
     @GetMapping
-    @JsonView(Views.FullInfo.class)
+    @JsonView(Views.IdName.class)
     public List<Course> getAllCourses(){
         return courseRepo.findAll();
     }
@@ -98,6 +103,33 @@ public class CourseController {
         }
         return filteredCourses;
     }
+
+    @PutMapping("/{id}")
+    @JsonView(Views.Id.class)
+    public Set<Course> enrollStudent(@PathVariable("id") Course course, Principal principal){
+        Student student = studentRepo.findByUsername(principal.getName()).get();
+        if (student.getEnrolledCourses().contains(course)){
+            student.removeCourse(course);
+        }else {
+            student.addCourse(course);
+        }
+        studentRepo.save(student);
+        return student.getEnrolledCourses();
+    }
+
+    @GetMapping("/enrolledCourses")
+    @JsonView(Views.Id.class)
+    public Set<Course> enrollStudent(Principal principal){
+        Student student = studentRepo.findByUsername(principal.getName()).get();
+        return student.getEnrolledCourses();
+    }
+    @GetMapping("/student")
+    @JsonView(Views.IdName.class)
+    public Set<Course> getTeacherWithCourse(Principal principal){
+        Student student = studentRepo.findByUsername(principal.getName()).get();
+        return student.getEnrolledCourses();
+    }
+
 
 }
 

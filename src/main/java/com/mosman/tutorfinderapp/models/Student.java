@@ -19,10 +19,17 @@ public class Student extends User{
 
     public Student() {
     }
-
-
     public Student(String username, String email, String password) {
         super(username, email, password);
     }
 
+    public void addCourse(Course course){
+        enrolledCourses.add(course);
+    }
+    public void removeCourse(Course course){
+        enrolledCourses.remove(course);
+    }
+    public Set<Course> getEnrolledCourses() {
+        return enrolledCourses;
+    }
 }

@@ -1,13 +1,22 @@
 import AuthService from '../services/auth.service';
+import axios from "axios";
+import authHeader from "../services/auth-header";
+import {displaySnackbar} from "../services/helper-functions";
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
     ? { status: { loggedIn: true }, user: user }
     : { status: { loggedIn: false }, user: null };
 
+const API_URL = 'http://localhost:8080'
+
 export const auth = {
     namespaced: true,
-    state: initialState,
+    state: {
+        user : user,
+        status : { loggedIn : !!user},
+        selectedUser : null
+    },
     actions: {
         login({ commit }, user) {
             return AuthService.login(user).then(
@@ -36,6 +45,43 @@ export const auth = {
                     return Promise.reject(error);
                 }
             );
+        },
+        fetchSelectedUser({commit, dispatch}, id){
+            axios.get( API_URL +'/user/'+id, {
+                headers: {"Authorization" : authHeader().Authorization,}
+            }).then(
+                response =>{
+                    commit('setSelectedUser', response.data)
+                },
+                error => {
+                    let res =
+                        (error.response && error.response.data) ||
+                        error.message ||
+                        error.toString();
+                    displaySnackbar(dispatch, { color: 'error' ,text : res})
+                }
+            )
+        },
+        updateUserAction({commit, dispatch}, data){
+            axios.put(API_URL + "/user", data.formData,
+                {
+                    headers: {
+                        "Authorization" : authHeader().Authorization,
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            ).then(
+                response => {
+                    commit('updateUserMutation', response.data)
+                }, error =>{
+                    let res =
+                        (error.response && error.response.data) ||
+                        error.message ||
+                        error.toString();
+                    displaySnackbar(dispatch, {color : 'error',text : res})
+                }
+            );
+
         }
     },
     mutations: {
@@ -56,6 +102,22 @@ export const auth = {
         },
         registerFailure(state) {
             state.status.loggedIn = false;
+        },
+        setSelectedUser(state, data){
+            state.selectedUser = data
+        },
+        updateUserMutation(state, data){
+            state.user.img = data.img
+            let userFromStorage = JSON.parse(localStorage.getItem('user'))
+            userFromStorage.img = data.img
+            state.user = userFromStorage;
+            localStorage.setItem('user', JSON.stringify(userFromStorage))
+        }
+
+    },
+    getters : {
+        getSelectedUser(state){
+            return state.selectedUser
         }
     }
 };

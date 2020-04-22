@@ -12,6 +12,8 @@ import TeacherCourses from "./views/teacher/TeacherCourses.vue";
 import CourseInfo from "./views/teacher/CourseInfo.vue";
 import StudentCourses from "./views/student/StudentCourses.vue";
 import StudentCourseInfo from "./views/student/StudentCourseInfo.vue";
+import EnrolledCourses from "./views/student/EnrolledCourses.vue";
+import UserProfile from "./views/profile/UserProfile.vue";
 import FilterCourses from "./views/FilterCourses.vue";
 
 Vue.use(Router);
@@ -87,6 +89,17 @@ export const router = new Router({
             path : '/filter-courses',
             name : 'FilterCourses',
             component : FilterCourses,
+        },
+        {
+            path : '/enrolled-courses',
+            name : 'EnrolledCourses',
+            component : EnrolledCourses,
+        },
+        {
+            path : '/profile/:id?',
+            name : 'UserProfile',
+            component : UserProfile,
+            props: true
         }
     ]
 });

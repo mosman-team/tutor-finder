@@ -5,6 +5,12 @@
                 <v-card
                         class="mx-auto my-12"
                         max-width="600">
+                    <v-list-item @click="profilePage">
+                        <v-list-item-avatar color="grey"></v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title class="headline">{{getCourse.teacher.username}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
                     <v-img
                             height="250"
                             :src="'/img/'+getCourse.coursePic"
@@ -43,23 +49,20 @@
 
                     <v-divider class="mx-4"></v-divider>
 
-                    <v-card-title>Keywords</v-card-title>
-
-                    <v-card-text>
-
-                        <v-chip v-for="(item, i) in getCourse.keyWords"
-                                class="ma-2"
-                                text-color="white"
-                                :color="colors[i%colors.length]">
-                            {{item}}
-                        </v-chip>
-
-                    </v-card-text>
                     <v-card-actions>
-                        <v-btn
+                        <v-btn v-if="!hasEnrolled"
                                 color="deep-purple lighten-2"
-                                text>
+                                class="mx-auto"
+                                text
+                                @click="enroll">
                             Enroll
+                        </v-btn>
+                        <v-btn v-if="hasEnrolled"
+                               color="red lighten-2"
+                               class="mx-auto"
+                               text
+                               @click="enroll">
+                            Unenroll
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -85,6 +88,7 @@
         created() {
             this.fetchStudentCourseAction(this.id)
             this.fetchTopicsAction(this.id)
+            this.fetchEnrolledCoursesIds()
         },
         watch : {
             getCourse(newVal){
@@ -92,10 +96,22 @@
             }
         },
         computed : {
-            ...mapGetters(['getCourse', 'getCourseTopics'])
+            ...mapGetters(['getCourse', 'getCourseTopics', 'getEnrolledCoursesIds']),
+            hasEnrolled : function(){
+                const index = this.getEnrolledCoursesIds.findIndex(item => item.id === this.getCourse.id)
+                return index > -1
+            }
         },
         methods : {
-            ...mapActions(['fetchStudentCourseAction', 'fetchTopicsAction']),
+            ...mapActions(['fetchStudentCourseAction', 'fetchTopicsAction',
+                'enrollCourseAction', 'fetchEnrolledCoursesIds']),
+            enroll(){
+                this.enrollCourseAction(this.getCourse.id) // unenrolls student if already enrolled
+            },
+            profilePage(){
+                // send to teacher profile
+                this.$router.push({ name: 'UserProfile', params: {id: this.getCourse.teacher.id}})
+            }
         }
     }
 </script>

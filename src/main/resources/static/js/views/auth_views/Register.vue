@@ -106,7 +106,7 @@
                     'student',
                     'teacher',
                 ],
-                user: new User('', '', ''),
+                user: new User('', '', '', ''),
                 // Position of registration form
                 alignment: 'center',
                 justify: 'center',

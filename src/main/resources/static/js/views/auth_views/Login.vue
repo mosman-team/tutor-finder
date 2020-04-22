@@ -66,7 +66,7 @@
         name: 'Login',
         data() {
             return {
-                user: new User('', ''),
+                user: new User('', '',''),
                 alignment: 'center',
                 justify: 'center',
                 valid : true,

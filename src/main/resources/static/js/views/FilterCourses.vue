@@ -87,7 +87,7 @@
         </v-row>
 
         <v-row justify="center">
-            <v-col cols="12" sm="12" md="12" lg="10">
+            <v-col cols="12" sm="12" md="12" lg="11">
                 <div class="headline legend grey--text text--darken-1">
                     Available courses
                 </div>

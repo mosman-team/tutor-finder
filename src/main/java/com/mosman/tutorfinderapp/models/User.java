@@ -28,6 +28,9 @@ public class User {
     @JsonView(Views.IdName.class)
     private String username;
 
+    @JsonView(Views.IdName.class)
+    private String img;
+
     @NotBlank
     @Size(max = 50)
     @Email
@@ -101,6 +104,14 @@ public class User {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
 

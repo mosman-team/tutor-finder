@@ -11,10 +11,12 @@ export const course = {
     state : {
         courses : [],
         course : new Course(null, '',
-            '', '', '', '', '', null)
+            '', '', '', '', '', null),
+        enrolledCoursesIds : []
     },
-    // ----------------TEACHER-------------
+
     actions : {
+        // ----------------TEACHER-------------
         fetchCoursesAction({commit, dispatch}){
             axios.get(API_URL + "/teachers/courses",
                 {
@@ -115,8 +117,42 @@ export const course = {
                     displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})
                 }
             )
-
+        },
+        fetchEnrolledCoursesIds({commit}){
+            axios.get(API_URL + "/courses/enrolledCourses", {
+                headers: {"Authorization" : authHeader().Authorization}
+            }).then(
+                response => {
+                    commit('setEnrolledCoursesIds', response.data)
+                }, error =>{}
+            )
+        },
+        enrollCourseAction({commit,dispatch}, id){
+            axios.put(API_URL + "/courses/" + id,{}, {
+                headers: {"Authorization" : authHeader().Authorization}
+            }).then(
+                response => {
+                    commit('setEnrolledCoursesIds', response.data)
+                }, error =>{
+                    displaySnackbar(dispatch, {color : 'error',text : 'Something went wrong!'})
+                }
+            )
+        },
+        fetchStudentCourses({commit, dispatch}){
+            axios.get(API_URL + "/courses/student",
+                {
+                    headers: {"Authorization" : authHeader().Authorization,}
+                }
+            ).then(
+                response => {
+                    commit('fetchAllCoursesMutation', response.data)
+                },
+                error =>{
+                    displaySnackbar(dispatch,{color : 'error',text : 'Could not fetch your courses!'})
+                }
+            )
         }
+
     },
     mutations : {
         fetchCoursesMutation(state, courses){
@@ -136,7 +172,11 @@ export const course = {
         },
         fetchAllCoursesMutation(state, courses){
             state.courses = courses
+        },
+        setEnrolledCoursesIds(state, data){
+            state.enrolledCoursesIds = data
         }
+
     },
     getters : {
         getCourses(state){
@@ -144,6 +184,9 @@ export const course = {
         },
         getCourse(state){
             return state.course
+        },
+        getEnrolledCoursesIds(state){
+            return state.enrolledCoursesIds
         }
     }
 

@@ -18,6 +18,7 @@
         <div class="courses">
             <div v-for="(course, i) in getCourses" :key="i" class="course">
                 <student-course
+                        :key="i"
                         :course="course">
                 </student-course>
             </div>
