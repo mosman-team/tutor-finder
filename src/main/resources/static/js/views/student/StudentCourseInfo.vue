@@ -6,7 +6,9 @@
                         class="mx-auto my-12"
                         max-width="600">
                     <v-list-item @click="profilePage">
-                        <v-list-item-avatar color="grey"></v-list-item-avatar>
+                        <v-list-item-avatar color="grey">
+                            <v-img :src=userImg></v-img>
+                        </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title class="headline">{{getCourse.teacher.username}}</v-list-item-title>
                         </v-list-item-content>
@@ -74,6 +76,7 @@
 <script>
 
     import {mapActions, mapGetters} from 'vuex'
+    import UserImgOrDefault from "../../services/helper-functions";
 
     export default {
         name: "CourseInfo",
@@ -100,6 +103,9 @@
             hasEnrolled : function(){
                 const index = this.getEnrolledCoursesIds.findIndex(item => item.id === this.getCourse.id)
                 return index > -1
+            },
+            userImg(){
+                return UserImgOrDefault(this.getCourse.teacher)
             }
         },
         methods : {

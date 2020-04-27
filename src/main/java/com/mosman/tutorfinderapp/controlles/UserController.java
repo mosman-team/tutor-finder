@@ -70,7 +70,6 @@ public class UserController {
                 userRepo.save(user);
             }
             UserDtoResponse res = new UserDtoResponse(optionalUser.get().getImg());
-            System.out.println(res.getImg());
             return ResponseEntity.ok(res);
         }
         return ResponseEntity
