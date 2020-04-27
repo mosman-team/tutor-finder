@@ -30,6 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/static/img/**")
                 .addResourceLocations("classpath:/static/img/");
+
         registry.addResourceHandler("/img/**")
                 .addResourceLocations(storageService.getRoot().toUri().toString());
 

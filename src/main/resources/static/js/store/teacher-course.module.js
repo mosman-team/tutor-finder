@@ -3,7 +3,7 @@ import authHeader from "../services/auth-header";
 import Course from "../models/Course";
 
 import {displaySnackbar} from "../services/helper-functions";
-import {router} from "../router";
+
 
 const API_URL = 'http://localhost:8080/teachers';
 

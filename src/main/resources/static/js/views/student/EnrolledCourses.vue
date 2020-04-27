@@ -19,7 +19,7 @@
     import StudentCourse from "../../components/StudentCourse.vue";
 
     export default {
-        name: "StudentCourses",
+        name: "EnrolledCourses",
         components : {
             StudentCourse
         },

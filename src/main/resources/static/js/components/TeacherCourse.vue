@@ -36,7 +36,7 @@
         ],
         methods : {
             viewCourse(){
-                this.$router.push({ name: 'courseInfo', params: {id: this.course.id}})
+                this.$router.push({ name: 'DetailsMessageContainer', params: {id: this.course.id}})
             }
         }
     }
