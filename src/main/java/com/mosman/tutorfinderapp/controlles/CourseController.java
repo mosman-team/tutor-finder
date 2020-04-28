@@ -130,7 +130,11 @@ public class CourseController {
         return student.getEnrolledCourses();
     }
 
-
+    @GetMapping("/teachers/{id}")
+    @JsonView(Views.IdName.class)
+    public List<Course> getTeacherCourses(@PathVariable("id") Teacher teacher){
+        return teacher.getCourses();
+    }
 }
 
 

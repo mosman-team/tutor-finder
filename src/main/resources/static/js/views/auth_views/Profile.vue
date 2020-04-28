@@ -16,7 +16,9 @@
                     <v-text-field
                             readonly
                             v-model="currentUser.email"
-                            label="Email Address"></v-text-field>
+                            label="Email Address">
+                    </v-text-field>
+
                     <v-btn class="mt-3" width="150" @click="openFileDialog">Change Avatar</v-btn>
                     <div class="mt-4 d-flex flex-column" v-if="imgChip.display">
                         <div class="mt-3">
@@ -51,6 +53,8 @@
 </template>
 
 <script>
+    import UserImgOrDefault from "../../services/helper-functions";
+
     export default {
         name: 'Profile',
         data () {
@@ -67,10 +71,7 @@
                 return this.$store.state.auth.user;
             },
             userImg(){
-                if (this.currentUser.img){
-                    return '/img/'+this.currentUser.img
-                }
-                return '/static/img/student.jpg'
+                return UserImgOrDefault(this.currentUser)
             }
         },
         mounted() {

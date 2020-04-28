@@ -5,7 +5,7 @@
                 <v-card-text v-if="getSelectedUser">
                     <v-flex class="mb-4 d-flex flex-column align-center">
                         <v-avatar size="96" class="mr-4">
-                            <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/0055765993ad4582e97bd6b8a37782c126288f33_full.jpg" alt="Avatar">
+                            <img :src="userImg" alt="Avatar">
                         </v-avatar>
                     </v-flex>
 
@@ -18,6 +18,10 @@
                             v-model="getSelectedUser.email"
                             label="Email Address"></v-text-field>
                 </v-card-text>
+
+                <v-card-actions>
+                    <v-btn v-if="getSelectedUser && userIsTeacher" @click="seeTeacherCourses" class="primary">My courses</v-btn>
+                </v-card-actions>
             </v-card>
         </v-row>
     </v-container>
@@ -25,6 +29,8 @@
 </template>
 
 <script>
+    import UserImgOrDefault from "../../services/helper-functions";
+
     export default {
         name: "UserProfile",
         props : ['id'],
@@ -42,10 +48,19 @@
             getSelectedUser () {
                 return this.$store.getters["auth/getSelectedUser"]
             },
+            userImg(){
+                return UserImgOrDefault(this.getSelectedUser)
+            },
+            userIsTeacher(){
+                return this.getSelectedUser.roles[0].name === 'ROLE_TEACHER'
+            }
         },
         methods : {
+            seeTeacherCourses(){
+                this.$router.push({ name: 'SelectedTCourses',
+                    params: {id : this.getSelectedUser.id, name : this.getSelectedUser.username}})
+            }
         }
-
     }
 </script>
 

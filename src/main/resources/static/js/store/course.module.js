@@ -151,6 +151,20 @@ export const course = {
                     displaySnackbar(dispatch,{color : 'error',text : 'Could not fetch your courses!'})
                 }
             )
+        },
+        fetchTeacherCoursesAction({commit, dispatch},id){
+            axios.get(API_URL + '/courses/teachers/'+id,
+                {
+                    headers: {"Authorization" : authHeader().Authorization,}
+                }
+            ).then(
+                response => {
+                    commit('fetchAllCoursesMutation', response.data)
+                },
+                error =>{
+                    displaySnackbar(dispatch,{color : 'error',text : 'Could not fetch teacher courses!'})
+                }
+            )
         }
 
     },

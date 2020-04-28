@@ -76,7 +76,7 @@
 </template>
 
 <script>
-    import UserProfile from "../views/profile/UserProfile.vue";
+    import UserImgOrDefault from "../services/helper-functions";
 
     export default {
 
@@ -106,10 +106,7 @@
                 return links
             },
             userImg(){
-                if (this.currentUser.img){
-                    return '/img/'+this.currentUser.img
-                }
-                return '/static/img/student.jpg'
+                return UserImgOrDefault(this.currentUser)
             }
         },
         methods: {
@@ -129,7 +126,7 @@
 
 <style>
     .profileImg{
-        width: 50px;
+        width: 100px;
     }
 
 </style>

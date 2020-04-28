@@ -1,5 +1,7 @@
 package com.mosman.tutorfinderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
+    @JsonView(Views.IdName.class)
     private ERole name;
 
     public Role(){
