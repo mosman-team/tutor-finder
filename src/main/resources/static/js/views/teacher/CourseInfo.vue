@@ -1,10 +1,10 @@
 <template>
-    <v-container v-if="!loading">
-        <v-row justify="center">
-            <v-col cols="12" sm="10" md="8" lg="6">
-                <v-card
-                        class="mx-auto my-12"
-                        max-width="600">
+<!--    <v-container v-if="!loading">-->
+<!--        <v-row justify="center">-->
+<!--            <v-col cols="12" sm="10" md="8" lg="6">-->
+                <v-card v-if="!loading"
+                        class="mx-auto"
+                        max-width="800">
                     <v-img
                             height="250"
                             :src="'/img/'+getCourse.coursePic"
@@ -60,10 +60,9 @@
 
                     </v-card-actions>
                 </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
-
+<!--            </v-col>-->
+<!--        </v-row>-->
+<!--    </v-container>-->
 </template>
 
 <script>
@@ -73,7 +72,7 @@
     export default {
         name: "CourseInfo",
         props : ['id'],
-        data () {
+        data() {
             return{
                 twoLine : true,
                 colors : ['primary', 'secondary', 'red', 'green'],

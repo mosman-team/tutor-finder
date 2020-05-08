@@ -8,6 +8,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import vuetify from 'plugins/vuetify' // path to vuetify export
 import store from './store';
 import { router } from './router';
+import {connect} from "./utils/ws";
+
+let user = JSON.parse(localStorage.getItem('user'));
+
+if (user !== null){
+    connect();
+}
 
 import {
     faHome,

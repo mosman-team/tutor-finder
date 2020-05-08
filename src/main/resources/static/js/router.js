@@ -15,6 +15,8 @@ import StudentCourseInfo from "./views/student/StudentCourseInfo.vue";
 import EnrolledCourses from "./views/student/EnrolledCourses.vue";
 import UserProfile from "./views/profile/UserProfile.vue";
 import FilterCourses from "./views/FilterCourses.vue";
+import DetailsMessageContainer from "./views/DetailsMessageContainer.vue";
+
 import SelectedTCourses from "./views/student/SelectedTCourses.vue";
 Vue.use(Router);
 
@@ -68,12 +70,8 @@ export const router = new Router({
             name : 'TeacherCourses',
             component : TeacherCourses,
         },
-        {
-            path : '/course-info/:id',
-            name : 'courseInfo',
-            component : CourseInfo,
-            props: true
-        },
+
+
         {
             path : '/all-courses',
             name : 'StudentCourses',
@@ -81,8 +79,8 @@ export const router = new Router({
         },
         {
             path : '/all-courses/:id',
-            name : 'StudentCourseInfo',
-            component : StudentCourseInfo,
+            name : 'DetailsMessageContainer',
+            component : DetailsMessageContainer,
             props: true
         },
         {
@@ -124,3 +122,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
+
+
+

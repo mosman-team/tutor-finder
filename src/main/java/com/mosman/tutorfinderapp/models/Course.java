@@ -51,6 +51,9 @@ public class Course {
     @ElementCollection
     private List<String> keyWords = new ArrayList<String>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private List<Message> messages;
+
     public Course() {
 
     }
@@ -149,5 +152,13 @@ public class Course {
 
     public void setKeyWords(List<String> keyWords) {
         this.keyWords = keyWords;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
