@@ -48,7 +48,7 @@
                 <v-flex class="mt-5">
                     <router-link to="/profile">
                         <v-avatar size="100px">
-                                <img class="profileImg" :src="userImg" alt="Avatar">
+                                <img class="profileImg" :src="currentUser.img" alt="Avatar">
                         </v-avatar>
                     </router-link>
                     <p class="font-weight-black white--text text-center mt-2">
@@ -76,8 +76,6 @@
 </template>
 
 <script>
-    import UserImgOrDefault from "../services/helper-functions";
-
     export default {
 
         data(){
@@ -104,9 +102,6 @@
                     links.push({icon: 'filter_list', text: 'Filter', route: '/filter-courses'})
                 }
                 return links
-            },
-            userImg(){
-                return UserImgOrDefault(this.currentUser)
             }
         },
         methods: {

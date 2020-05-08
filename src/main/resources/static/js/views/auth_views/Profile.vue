@@ -5,7 +5,7 @@
                 <v-card-text>
                     <v-flex class="mb-4 d-flex justify-center">
                         <v-avatar size="96" class="mr-4">
-                            <img :src="userImg" alt="Avatar">
+                            <img :src="currentUser.img" alt="Avatar">
                         </v-avatar>
                     </v-flex>
 
@@ -53,8 +53,6 @@
 </template>
 
 <script>
-    import UserImgOrDefault from "../../services/helper-functions";
-
     export default {
         name: 'Profile',
         data () {
@@ -70,9 +68,6 @@
             currentUser() {
                 return this.$store.state.auth.user;
             },
-            userImg(){
-                return UserImgOrDefault(this.currentUser)
-            }
         },
         mounted() {
             if (!this.currentUser) {

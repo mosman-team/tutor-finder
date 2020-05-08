@@ -61,12 +61,12 @@ public class UserController {
             User user = optionalUser.get();
 
             if (userDto.getFile() != null){
-                if (user.getImg() != null){
-                    storageService.delete(user.getImg());
+                if (!user.getImg().equals("/img/defaultImg.jpg")){
+                    storageService.delete(user.getImg().substring(5));
                 }
                 String resultFilename = TeacherController.getResultFileName(userDto.getFile().getOriginalFilename());
                 storageService.save(userDto.getFile(), resultFilename);
-                user.setImg(resultFilename);
+                user.setImg("/img/"+resultFilename);
                 userRepo.save(user);
             }
             UserDtoResponse res = new UserDtoResponse(optionalUser.get().getImg());

@@ -2,7 +2,7 @@
             <div>
                 <div class="received-chats" v-if="currentUserId !== message.user.id">
                     <div class="received-chats-img">
-                        <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
+                        <img v-bind:src="message.user.img" alt="" class="avatar">
                     </div>
 
                     <div class="received-msg">
@@ -32,17 +32,16 @@
                     </div>
 
                     <div class="outgoing-chats-img">
-                        <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
+                        <img v-bind:src="message.user.img" alt="" class="avatar">
                     </div>
                 </div>
-
-
             </div>
 
 </template>
 
 <script>
     import {mapActions} from 'vuex'
+
     export default {
         props: ['currentUserId', 'message', 'editMessage'],
 
