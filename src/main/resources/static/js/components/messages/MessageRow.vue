@@ -52,7 +52,7 @@
                 this.editMessage(this.message)
             },
             del() {
-                this.removeMessageAction(this.message.id)
+                this.removeMessageAction(this.message)
             }
         }
     }

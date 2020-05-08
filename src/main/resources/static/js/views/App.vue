@@ -26,7 +26,9 @@
 </template>
 <script>
     import Navbar from "../components/Navbar.vue";
-    import {mapState} from 'vuex';
+    import {mapState, mapMutations} from 'vuex';
+    import {addHandler} from "../utils/ws";
+
     export default {
         components: {
             Navbar
@@ -52,16 +54,29 @@
             }
         },
         methods: {
-            /*logOut() {
-                this.$store.dispatch('auth/logout');
-                this.$router.push('/login');
-            },
-            goHome(){
-                this.$router.push('/home');
-            },
-            showProfile() {
-                this.$router.push('/profile');
-            }*/
+            ...mapMutations(['addMessageMutation','updateMessageMutation','removeMessageMutation']),
+        },
+        created() {
+            addHandler(data => {
+                console.log(data);
+                if (data.objectType === 'MESSAGE') {
+                    switch (data.eventType) {
+                        case 'CREATE':
+                            this.addMessageMutation(data.body);
+                            break;
+                        case 'UPDATE':
+                            this.updateMessageMutation(data.body);
+                            break;
+                        case 'REMOVE':
+                            this.removeMessageMutation(data.body);
+                            break;
+                        default:
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
+                    }
+                } else {
+                    console.error(`Looks like the object type if unknown "${data.objectType}"`)
+                }
+            })
         }
     };
 </script>

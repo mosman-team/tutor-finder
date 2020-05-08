@@ -75,10 +75,10 @@ export const message = {
                 }
             )
         },
-        removeMessageAction({commit}, messageId){
+        removeMessageAction({commit}, message){
             // console.log(API_URL + "/messages/"+ messageId);
 
-            axios.delete(API_URL + "/messages/"+ messageId,
+            axios.delete(API_URL + "/messages/"+ message.id,
                 {
                     headers: {
                         "Authorization" : authHeader().Authorization,
@@ -86,7 +86,7 @@ export const message = {
                 }
             ).then(
                 response => {
-                    commit('removeMessageMutation', messageId)
+                    commit('removeMessageMutation', message.id)
                 },
                 error => {
                 }
@@ -98,10 +98,16 @@ export const message = {
             state.messages = messages
         },
         addMessageMutation(state, message){
-            state.messages = [
-                ...state.messages,
-                message
-            ]
+            const index = state.messages.findIndex(item => item.id === message.id)
+            if (index <= -1){
+                state.messages = [
+                    ...state.messages,
+                    message
+                ]
+            }else {
+                console.log('message already added')
+            }
+
         },
         updateMessageMutation(state, message){
             const updateIndex = state.messages.findIndex(item => item.id === message.id)
@@ -112,8 +118,8 @@ export const message = {
                 ...state.messages.slice(updateIndex + 1)
             ]
         },
-        removeMessageMutation(state, messageId){
-            const deleteIndex = state.messages.findIndex(item => item.id === messageId)
+        removeMessageMutation(state, message){
+            const deleteIndex = state.messages.findIndex(item => item.id === message.id)
 
             if (deleteIndex > -1){
                 state.messages = [

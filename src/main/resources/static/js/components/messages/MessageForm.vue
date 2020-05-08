@@ -56,7 +56,7 @@
                     this.addMessageAction(data);
                 }
                 this.text = ''
-
+                this.messageId = ''
             },
         }
     }
