@@ -3,7 +3,9 @@
         <v-app-bar app flat>
             <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer" v-if="currentUser"></v-app-bar-nav-icon>
             <v-toolbar-title class="text-uppercase grey--text">
-                <span class="font-weight-light">Tutor</span><span>Finder</span>
+                <div @click="redirectToHome" class="tutorFinderTitle">
+                    <span class="font-weight-light">Tutor</span><span>Finder</span>
+                </div>
             </v-toolbar-title>
             <v-spacer></v-spacer>
 
@@ -115,6 +117,9 @@
             showProfile() {
                 this.$router.push('/profile');
             },
+            redirectToHome(){
+                this.$router.push('/home');
+            }
         }
     }
 </script>
@@ -123,5 +128,7 @@
     .profileImg{
         width: 100px;
     }
-
+    .tutorFinderTitle{
+        cursor: pointer;
+    }
 </style>
