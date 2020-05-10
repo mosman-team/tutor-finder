@@ -121,6 +121,7 @@ public class AuthController {
             }
         }
         user.setRoles(roles);
+        user.setImg("/img/defaultImg.jpg");
 //        user.setActivationCode(UUID.randomUUID().toString()); //comment
         userRepo.save(user);
 

@@ -9,7 +9,7 @@
 
         <v-list-item @click="profilePage">
             <v-list-item-avatar color="grey">
-                <v-img :src=userImg></v-img>
+                <v-img :src="this.getCourse.teacher.img"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">{{getCourse.teacher.username}}</v-list-item-title>
@@ -56,6 +56,19 @@
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
+        <v-card-title>Category</v-card-title>
+
+        <v-card-text>
+
+            <v-chip v-for="(item, i) in getCourse.keyWords"
+                    class="ma-2"
+                    text-color="white"
+                    :color="colors[i%colors.length]">
+                {{item}}
+            </v-chip>
+
+        </v-card-text>
+        <v-divider class="mx-4"></v-divider>
 
         <v-card-actions>
             <v-btn v-if="!hasEnrolled"
@@ -82,7 +95,6 @@
 <script>
 
     import {mapActions, mapGetters} from 'vuex'
-    import UserImgOrDefault from "../../services/helper-functions";
 
     export default {
         name: "CourseInfo",
@@ -109,9 +121,6 @@
             hasEnrolled : function(){
                 const index = this.getEnrolledCoursesIds.findIndex(item => item.id === this.getCourse.id)
                 return index > -1
-            },
-            userImg(){
-                return UserImgOrDefault(this.getCourse.teacher)
             }
         },
         methods : {

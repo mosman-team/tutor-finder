@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="received-chats" v-if="currentUserId !== message.user.id">
-            <div class="received-chats-img">
-                <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
-            </div>
+            <div>
+                <div class="received-chats" v-if="currentUserId !== message.user.id">
+                    <div class="received-chats-img">
+                        <img v-bind:src="message.user.img" alt="" class="avatar">
+                    </div>
 
             <div class="received-msg">
                 <div class="received-msg-inbox">
@@ -51,12 +51,11 @@
 
             </div>
 
-            <div class="outgoing-chats-img">
-                <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
+                    <div class="outgoing-chats-img">
+                        <img v-bind:src="message.user.img" alt="" class="avatar">
+                    </div>
+                </div>
             </div>
-        </div>
-
-    </div>
 
 </template>
 
@@ -318,5 +317,7 @@
             display: none;
         }
     }*/
+
+
 
 </style>

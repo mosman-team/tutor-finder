@@ -29,7 +29,7 @@
                     </v-card-text>
                     <v-divider class="mx-4"></v-divider>
 
-                    <v-card-title>Контент Курса</v-card-title>
+                    <v-card-title>Content</v-card-title>
 
                     <v-card-text>
                         <v-list-item
@@ -44,7 +44,7 @@
 
                     <v-divider class="mx-4"></v-divider>
 
-                    <v-card-title>Keywords</v-card-title>
+                    <v-card-title>Category</v-card-title>
 
                     <v-card-text>
 

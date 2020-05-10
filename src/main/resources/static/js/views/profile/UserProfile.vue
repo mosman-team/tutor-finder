@@ -5,7 +5,7 @@
                 <v-card-text v-if="getSelectedUser">
                     <v-flex class="mb-4 d-flex flex-column align-center">
                         <v-avatar size="96" class="mr-4">
-                            <img :src="userImg" alt="Avatar">
+                            <img :src="getSelectedUser.img" alt="Avatar">
                         </v-avatar>
                     </v-flex>
 
@@ -47,9 +47,6 @@
         computed : {
             getSelectedUser () {
                 return this.$store.getters["auth/getSelectedUser"]
-            },
-            userImg(){
-                return UserImgOrDefault(this.getSelectedUser)
             },
             userIsTeacher(){
                 return this.getSelectedUser.roles[0].name === 'ROLE_TEACHER'

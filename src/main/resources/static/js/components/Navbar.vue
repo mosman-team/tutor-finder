@@ -3,7 +3,9 @@
         <v-app-bar app flat>
             <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer" v-if="currentUser"></v-app-bar-nav-icon>
             <v-toolbar-title class="text-uppercase grey--text">
-                <span class="font-weight-light">Tutor</span><span>Finder</span>
+                <div @click="redirectToHome" class="tutorFinderTitle">
+                    <span class="font-weight-light">Tutor</span><span>Finder</span>
+                </div>
             </v-toolbar-title>
             <v-spacer></v-spacer>
 
@@ -48,7 +50,7 @@
                 <v-flex class="mt-5">
                     <router-link to="/profile">
                         <v-avatar size="100px">
-                                <img class="profileImg" :src="userImg" alt="Avatar">
+                                <img class="profileImg" :src="currentUser.img" alt="Avatar">
                         </v-avatar>
                     </router-link>
                     <p class="font-weight-black white--text text-center mt-2">
@@ -76,8 +78,6 @@
 </template>
 
 <script>
-    import UserImgOrDefault from "../services/helper-functions";
-
     export default {
 
         data(){
@@ -104,9 +104,6 @@
                     links.push({icon: 'filter_list', text: 'Filter', route: '/filter-courses'})
                 }
                 return links
-            },
-            userImg(){
-                return UserImgOrDefault(this.currentUser)
             }
         },
         methods: {
@@ -120,6 +117,9 @@
             showProfile() {
                 this.$router.push('/profile');
             },
+            redirectToHome(){
+                this.$router.push('/home');
+            }
         }
     }
 </script>
@@ -128,5 +128,7 @@
     .profileImg{
         width: 100px;
     }
-
+    .tutorFinderTitle{
+        cursor: pointer;
+    }
 </style>
