@@ -30,16 +30,16 @@
         <v-row
                 align="center"
                 justify="center">
-            <v-col v-for="(data,i) in cardData" class="text-center" cols="3">
+            <v-col v-for="(data,i) in data" class="text-center" cols="3">
                 <v-card
                     class="mx-auto"
-                    max-width="344"
+                    max-width="400"
                     outlined>
-                    <v-list-item three-line>
+                    <v-list-item>
                         <v-list-item-content :class="'listItem'+i">
                             <div class="display-1 mb-4 number">{{data.count}}</div>
                             <v-list-item-title class="headline mb-1">{{data.type}}</v-list-item-title>
-                            <v-list-item-subtitle>{{data.text}}</v-list-item-subtitle>
+                            <div class="te-co-st">{{data.text}}</div>
                         </v-list-item-content>
 
                         <v-list-item-avatar
@@ -55,32 +55,43 @@
 </template>
 
 <script>
-
+    import axios from 'axios';
     export default {
         name: 'Home',
         data() {
             return {
-                cardData : [
-                    {
-                        count : 99,
-                        type : 'teachers',
-                        text : 'Greyhound divisely hello coldly fonwderfully',
-                        img : 'http://localhost:8080/static/img/teacher.png'
-                    },
-                    {
-                        count : 150,
-                        type : 'courses',
-                        text : 'Greyhound divisely hello coldly fonwderfully',
-                        img : 'http://localhost:8080/static/img/defaultCourseImg.png'
-                    },
-                    {
-                        count : 1000,
-                        type : 'students',
-                        text : 'Greyhound divisely hello coldly fonwderfully',
-                        img : 'http://localhost:8080/static/img/student.png'
-                    },
-                ],
+                data : []
             };
+        },
+        created(){
+            axios.get("http://localhost:8080/test/appInfo").then(
+                res => {
+                    console.log(res.data)
+                    this.data = [
+                        {
+                            count : res.data.nOfTeachers,
+                            type : 'teachers',
+                            text : 'Highly qualified teachers throughout the country',
+                            img : 'http://localhost:8080/static/img/teacher.png'
+                        },
+                        {
+                            count : res.data.nOfCourses,
+                            type : 'courses',
+                            text : 'Different types of courses for different people',
+                            img : 'http://localhost:8080/static/img/defaultCourseImg.png'
+                        },
+                        {
+                            count : res.data.nOfStudents,
+                            type : 'students',
+                            text : 'Looking for the courses all over Kazakhstan',
+                            img : 'http://localhost:8080/static/img/student.png'
+                        },
+                    ]
+                },
+                error => {
+                    console.log
+                }
+            )
         },
         methods : {
             redirectToRegister(){
@@ -103,6 +114,9 @@
     }
     .home-text{
         color: white;
+    }
+    .te-co-st{
+        color: #757575;
     }
 
     .listItem0{

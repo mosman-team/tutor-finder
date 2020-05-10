@@ -8,8 +8,11 @@
             {{course.courseName}}
         </v-card-title>
         <v-card-text>
-            {{course.courseDesc}}
+            <div class="desc">
+                {{course.courseDesc}}
+            </div>
         </v-card-text>
+
 
         <v-card-actions>
             <v-btn text color="deep-purple accent-4" @click="viewCourse">
@@ -36,5 +39,11 @@
 </script>
 
 <style scoped>
+    .desc{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+    }
 
 </style>

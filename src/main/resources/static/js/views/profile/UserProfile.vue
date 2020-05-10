@@ -29,8 +29,6 @@
 </template>
 
 <script>
-    import UserImgOrDefault from "../../services/helper-functions";
-
     export default {
         name: "UserProfile",
         props : ['id'],

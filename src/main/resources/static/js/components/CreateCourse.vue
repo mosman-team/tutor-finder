@@ -58,8 +58,8 @@
                 ],
                 courseDescRules : [
                     v => !!v || 'Course description is required',
-                    v => (v && v.length >= 100) || 'Description must be more than 100 characters',
-                    v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
+                    v => (v && v.length > 200) || 'Description must be more than 200 characters',
+                    v => (v && v.length < 1000) || 'Description must be less than 1000 characters',
                 ],
                 // files
                 files: [],

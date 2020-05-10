@@ -8,7 +8,9 @@
             {{course.courseName}}
         </v-card-title>
         <v-card-text>
-            {{course.courseDesc}}
+            <div class="desc">
+                {{course.courseDesc}}
+            </div>
         </v-card-text>
 
         <v-card-actions>
@@ -27,8 +29,6 @@
 </template>
 
 <script>
-    import {router} from "../router";
-
     export default {
         name: "Course",
         props : [
@@ -37,11 +37,20 @@
         methods : {
             viewCourse(){
                 this.$router.push({ name: 'DetailsMessageContainer', params: {id: this.course.id}})
+            },
+            getDesc(){
+                console.log(sliceText(this.course.desc))
+                return sliceText(this.course.courseDesc)
             }
-        }
+        },
     }
 </script>
 
 <style scoped>
-
+    .desc{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+    }
 </style>

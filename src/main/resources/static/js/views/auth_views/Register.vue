@@ -60,17 +60,18 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
+                                color="error"
+                                class="mr-4"
+                                @click="reset">
+                            Reset Form
+                        </v-btn>
+
+                        <v-btn
                                 :disabled="!valid"
                                 color="primary"
                                 class="mr-4"
                                 @click="validate">
                             Sign up
-                        </v-btn>
-                        <v-btn
-                                color="error"
-                                class="mr-4"
-                                @click="reset">
-                            Reset Form
                         </v-btn>
                     </v-card-actions>
                 </v-card>

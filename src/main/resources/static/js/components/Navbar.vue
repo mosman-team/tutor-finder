@@ -45,7 +45,7 @@
 
         </v-app-bar>
 
-        <v-navigation-drawer app v-model="drawer" class="primary" v-if="currentUser">
+        <v-navigation-drawer app v-model="drawer" :class="theme" v-if="currentUser">
             <v-layout column align-center>
                 <v-flex class="mt-5">
                     <router-link to="/profile">
@@ -83,17 +83,22 @@
         data(){
             return {
                 drawer : false,
-
             }
         },
         computed: {
             currentUser() {
                 return this.$store.state.auth.user;
             },
+            theme(){
+                if (this.currentUser.roles.includes('ROLE_STUDENT')){
+                    return 'primary'
+                }else {
+                    return 'secondary'
+                }
+            },
             links : function () {
                 const links = [
                     {icon : 'home', text : 'Home', route : '/'},
-                    {icon : 'mdi-email', text : 'New Messages', route : '/messages'},
                 ]
                 if (this.currentUser.roles.includes('ROLE_TEACHER')){
                     links.push({icon : 'folder', text : 'My Courses', route : '/my-courses'})
@@ -106,6 +111,7 @@
                 return links
             }
         },
+
         methods: {
             logOut() {
                 this.$store.dispatch('auth/logout');
@@ -131,4 +137,5 @@
     .tutorFinderTitle{
         cursor: pointer;
     }
+
 </style>

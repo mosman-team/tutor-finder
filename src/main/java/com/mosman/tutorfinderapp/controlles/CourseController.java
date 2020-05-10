@@ -62,7 +62,7 @@ public class CourseController {
                         && course.getPrice() <= cinfo.getPrice()
                         && course.getLanguage().equalsIgnoreCase(cinfo.getLanguage())
                 ){
-                    if (cinfo.getKeyWords() == null || ListUtil.UnionSize(course.getKeyWords(), cinfo.getKeyWords()) > 0){
+                    if (cinfo.getKeyWords() == null || ListUtil.IntersectionSize(course.getKeyWords(), cinfo.getKeyWords()) > 0){
                         filteredCourses.add(course);
                     }
 

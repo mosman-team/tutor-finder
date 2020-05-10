@@ -20,7 +20,7 @@ public class Course {
     private String courseName;
 
     @JsonView(Views.IdName.class)
-    @Column(name = "course_desc")
+    @Column(name = "course_desc", columnDefinition = "TEXT")
     private String courseDesc;
 
     @JsonView(Views.IdName.class)
