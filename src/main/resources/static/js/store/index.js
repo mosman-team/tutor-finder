@@ -6,9 +6,9 @@ import {teacherCourse} from "./teacher-course.module";
 import {courseTopics} from './course-topics.module';
 import {course} from "./course.module";
 import {message} from "./message.module";
+import {common} from "./common.module";
 
 import createPersistedState from "vuex-persistedstate";
-
 
 Vue.use(Vuex);
 
@@ -34,7 +34,8 @@ export default new Vuex.Store({
         teacherCourse:teacherCourse,
         courseTopics:courseTopics,
         course : course,
-        message: message
+        message: message,
+        common: common
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,

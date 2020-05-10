@@ -1,51 +1,73 @@
 <template>
-            <div>
-                <div class="received-chats" v-if="currentUserId !== message.user.id">
-                    <div class="received-chats-img">
-                        <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
-                    </div>
+    <div>
+        <div class="received-chats" v-if="currentUserId !== message.user.id">
+            <div class="received-chats-img">
+                <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
+            </div>
 
-                    <div class="received-msg">
-                        <div class="received-msg-inbox">
-                            <p class="ow"><span>{{ message.user.username }}</span><br>{{ message.text }}</p>
-                        </div>
-                    </div>
+            <div class="received-msg">
+                <div class="received-msg-inbox">
+                    <p class="ow">
+
+                        <span class="name-time">
+                            <span>
+                                {{ message.user.username }}
+                            </span>
+                            <span class="time">
+                                {{message.creationDate}}
+                            </span>
+                        </span>
+
+                        {{ message.text }}
+                        <media v-if="message.link" :message="message"></media>
+                    </p>
                 </div>
+            </div>
+        </div>
 
-                <div class="outgoing-chats" v-else>
-                    <div class="outgoing-chats-msg">
-                        <p class="ow">{{ message.text }}</p>
+        <div class="outgoing-chats" v-else>
+            <div class="outgoing-chats-msg">
+                <p class="ow">{{ message.text }}
+                    <media v-if="message.link" :message="message"></media>
+                </p>
 
-                        <div class="actn-buttons">
-                            <v-btn icon @click="edit" small>
-                                <v-icon>
-                                    edit
-                                </v-icon>
-                            </v-btn>
-                            <v-btn icon @click="del" small>
-                                <v-icon>
-                                    delete
-                                </v-icon>
-                            </v-btn>
-                        </div>
+                <div class="actn-buttons">
+                    <span class="time">
+                        {{message.creationDate}}
+                    </span>
 
-                    </div>
+                    <v-btn icon @click="edit" small>
+                        <v-icon>
+                            edit
+                        </v-icon>
+                    </v-btn>
+                    <v-btn icon @click="del" small>
+                        <v-icon>
+                            delete
+                        </v-icon>
+                    </v-btn>
 
-                    <div class="outgoing-chats-img">
-                        <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
-                    </div>
                 </div>
-
 
             </div>
+
+            <div class="outgoing-chats-img">
+                <img v-bind:src="'/img/' + message.user.img" alt="" class="avatar">
+            </div>
+        </div>
+
+    </div>
 
 </template>
 
 <script>
     import {mapActions} from 'vuex'
+    import Media from "../media/Media.vue";
     export default {
         props: ['currentUserId', 'message', 'editMessage'],
-
+        components: {
+            Media
+        },
         methods: {
             ...mapActions(['removeMessageAction']),
             edit() {
@@ -105,9 +127,10 @@
         vertical-align: top;
     }
 
-    .received-msg-inbox {
+    /*.received-msg-inbox {
         width: 57%;
-    }
+        display: flex;  !*it must not be here*!
+    }*/
 
     .received-msg-inbox p {
         font-family: 'Roboto';
@@ -118,10 +141,30 @@
         margin: 0;
         padding: 12px;
         position: relative;
-        width: 300px;
+        max-width: 500px;
         min-height: 61px;
         left: 30px;
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+
+        /*width: 300px;*/
+    }
+    @media (max-width: 800px) {
+        .received-msg-inbox p {
+            max-width: 300px;
+        }
+
+        .outgoing-chats-msg {
+            max-width: 300px;
+        }
+    }
+    @media (max-width: 550px) {
+        .received-msg-inbox p {
+            max-width: 200px;
+        }
+
+        .outgoing-chats-msg {
+            max-width: 200px;
+        }
     }
 
     .received-msg-inbox p span {
@@ -154,13 +197,32 @@
         border-bottom: 50px solid transparent;
     }
 
-    .time {
+    /*time*/
+    .name-time{
+        display: flex;
+        justify-content: space-between;
+    }
+    .received-msg-inbox p span .time {
+        color: #777;
+        display: block;
+        font-size: 10px;
+        margin-left: 8px;
+        margin-top: 2px;
+    }
+
+    /*.time {
         color: #777;
         display: block;
         font-size: 12px;
         margin: 8px 0 0;
-    }
+    }*/
 
+    .outgoing-chats-msg .actn-buttons .time{
+        color: #777;
+        display: block;
+        font-size: 10px;
+        margin-top: 8px;
+    }
     .outgoing-chats {
         overflow: hidden;
         margin: 26px 20px;
@@ -176,12 +238,14 @@
         margin: 0;
         color: #fff;
         padding: 12px;
-        max-width: 300px;
+        max-width: 500px;
         min-height: 42px;
         position: relative;
         border-radius: 7px;
         align-items: center;
         line-height: 1.2;
+
+        /*default max-width: 300px;*/
 
         /*253*/
     }
@@ -221,7 +285,7 @@
         stroke: #CCD7F0;
     }
 
-    @media (max-width: 450px) {
+    /*@media (max-width: 450px) {
         .login-container {
             padding: 40px;
         }
@@ -253,6 +317,6 @@
         .outgoing-chats-msg p::before {
             display: none;
         }
-    }
+    }*/
 
 </style>

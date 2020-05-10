@@ -5,11 +5,11 @@
                 <div>
                     <v-autocomplete
                             v-model="getCurrentCourse.city"
-                            :items="options"
+                            :items="getAllCities"
                             dense
                             outlined
-                            label="Выберите город"
-                            placeholder="Шымкент"
+                            label="Choose city"
+                            placeholder="Almaty"
                             :rules="cityRules"
                             required
                     ></v-autocomplete>
@@ -18,7 +18,7 @@
                 <div>
                     <v-text-field
                             ref="title"
-                            label="Адрес"
+                            label="Address"
                             placeholder="просп. Абая 151"
                             v-model="getCurrentCourse.address"
                             required
@@ -31,7 +31,7 @@
                     <img src="/static/img/tenge.png" alt="" id="price-image">
                     <v-text-field
                             v-model="getCurrentCourse.price"
-                            label="Цена за Месяц"
+                            label="Monthly Payment"
                             placeholder="0"
                             required
                             :rules="priceRules"
@@ -39,7 +39,7 @@
                 </div>
 
                 <div>
-                    <header>Язык обучения</header>
+                    <header>Language of education</header>
                     <v-radio-group class="ma-1"
                                    v-model="getCurrentCourse.language"
                                    :rules="languageRules"
@@ -55,36 +55,14 @@
                 </div>
 
                 <div>
-                    <span class="label">Клювевые слова по которым студенты смогут найти ваш курс</span>
-                    <!--<v-combobox
-                            v-model="getCurrentCourse.keyWords"
-                            :items="items"
-                            chips
-                            clearable
-                            label="key words"
-                            multiple
-                            prepend-icon="filter_list"
-                            solo
-                    >
-                        <template v-slot:selection="{ attrs, item, select, selected }">
-                            <v-chip
-                                    v-bind="attrs"
-                                    :input-value="selected"
-                                    close
-                                    @click="select"
-                                    @click:close="remove(item)"
-                            >
-                                <strong>{{ item }}</strong>&nbsp;
-                            </v-chip>
-                        </template>
-                    </v-combobox>-->
+                    <span class="label">Course category</span>
 
                     <v-select
                             v-model="getCurrentCourse.keyWords"
                             :items="items"
                             chips
                             clearable
-                            label="Choose course category"
+                            label="IT & computer science"
                             multiple
                             prepend-icon="filter_list"
                             solo
@@ -123,99 +101,12 @@
         data: function () {
             return {
                 submitted: false,
-                options: ["Алма-Ата (Алматы)",
-                    "Нур-Султан",
-                    "Шымкент",
-                    "Актобе",
-                    "Караганда",
-                    "Тараз",
-                    "Павлодар",
-                    "Усть-Каменогорск",
-                    "Семей",
-                    "Атырау",
-                    "Костанай",
-                    "Кызылорда",
-                    "Уральск",
-                    "Петропавловск",
-                    "Актау",
-                    "Темиртау",
-                    "Туркестан",
-                    "Талдыкорган",
-                    "Кокшетау",
-                    "Экибастуз",
-                    "Рудный",
-                    "Жезказган",
-                    "Жанаозен",
-                    "Балхаш",
-                    "Кентау",
-                    "Каскелен",
-                    "Сатпаев",
-                    "Кульсары",
-                    "Риддер",
-                    "Щучинск",
-                    "Степногорск",
-                    "Капшагай",
-                    "Арыс",
-                    "Сарань",
-                    "Талгар",
-                    "Жаркент",
-                    "Аксу",
-                    "Байконур (Байконыр)",
-                    "Аягоз",
-                    "Шахтинск",
-                    "Шу",
-                    "Алтай",
-                    "Лисаковск",
-                    "Кандыагаш",
-                    "Аксай",
-                    "Житикара",
-                    "Аральск",
-                    "Есик",
-                    "Сарыагаш",
-                    "Текели",
-                    "Каратау",
-                    "Атбасар",
-                    "Шардара",
-                    "Абай",
-                    "Аркалык",
-                    "Шалкар",
-                    "Хромтау",
-                    "Ленгер",
-                    "Жетысай",
-                    "Уштобе",
-                    "Жанатас",
-                    "Алга",
-                    "Шемонаиха",
-                    "Макинск",
-                    "Ушарал",
-                    "Зайсан",
-                    "Акколь",
-                    "Приозёрск",
-                    "Курчатов",
-                    "Эмба",
-                    "Тайынша",
-                    "Сарканд",
-                    "Есиль",
-                    "Ерейментау",
-                    "Серебрянск",
-                    "Каркаралинск",
-                    "Каражал",
-                    "Булаево",
-                    "Сергеевка",
-                    "Мамлютка",
-                    "Шар",
-                    "Форт-Шевченко",
-                    "Державинск",
-                    "Казалинск",
-                    "Степняк",
-                    "Темир",
-                    "Жем"
-                ],
+
                 valid: true,
                 lazy: false,
 
                 cityRules: [
-                    v => !!this.options.includes(v) || 'Город должен быть выбран',
+                    v => !!this.getAllCities.includes(v) || 'Город должен быть выбран',
                 ],
                 priceRules: [
                     v => !!v || 'Цена курса должна присутствовать',
@@ -251,7 +142,7 @@
 
             };
         },
-        computed: mapGetters(['getCurrentCourse']),
+        computed: mapGetters(['getCurrentCourse', 'getAllCities']),
         methods: {
             ...mapMutations(['removeFromKeyWordsMutation']),
             ...mapActions(['addInfoAction']),

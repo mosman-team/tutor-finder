@@ -58,7 +58,7 @@
         },
         created() {
             addHandler(data => {
-                console.log(data);
+                // console.log(data);
                 if (data.objectType === 'MESSAGE') {
                     switch (data.eventType) {
                         case 'CREATE':

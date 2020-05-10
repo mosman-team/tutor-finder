@@ -22,7 +22,7 @@ public class Message {
     private String text;
 
     @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMM-dd HH:mm")
     @JsonView(Views.FullInfo.class)
     private LocalDateTime creationDate;
 
@@ -34,6 +34,18 @@ public class Message {
     @JoinColumn(name = "user_id")
     @JsonView(Views.IdName.class)
     private User user;
+
+
+    @Column(length = 1000)
+    @JsonView(Views.FullInfo.class)
+    private String link;
+    @JsonView(Views.FullInfo.class)
+    private String linkTitle;
+    @JsonView(Views.FullInfo.class)
+    private String linkDescription;
+    @JsonView(Views.FullInfo.class)
+    private String linkCover;
+
 
 
     public Message() {
@@ -77,6 +89,38 @@ public class Message {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLinkTitle() {
+        return linkTitle;
+    }
+
+    public void setLinkTitle(String linkTitle) {
+        this.linkTitle = linkTitle;
+    }
+
+    public String getLinkDescription() {
+        return linkDescription;
+    }
+
+    public void setLinkDescription(String linkDescription) {
+        this.linkDescription = linkDescription;
+    }
+
+    public String getLinkCover() {
+        return linkCover;
+    }
+
+    public void setLinkCover(String linkCover) {
+        this.linkCover = linkCover;
     }
 }
 

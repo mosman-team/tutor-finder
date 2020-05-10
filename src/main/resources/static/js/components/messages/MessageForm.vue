@@ -47,10 +47,8 @@
                 };
 
                 if (this.messageId){
-                    console.log('update message')
-
+                    // console.log('update message')
                     this.updateMessageAction(data);
-
                 }else {
 
                     this.addMessageAction(data);
@@ -124,10 +122,11 @@
     .msg-bottom {
         border-radius: 0px 0px 10px 10px;
         position: absolute;
-        z-index: 10;
+        z-index: 1;
         left: 0;
         bottom: 0;
         width: 100%;
+        /*z-index: 10;*/
     }
 
     .message-form {
@@ -151,7 +150,5 @@
         height: 58px;
         overflow:hidden
     }
-
-
 
 </style>

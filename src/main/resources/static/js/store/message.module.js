@@ -53,8 +53,8 @@ export const message = {
             )
         },
         updateMessageAction({commit}, data){
-            console.log(data)
-            console.log(API_URL + '/' + 'messages/' + data.messageId)
+            // console.log(data)
+            // console.log(API_URL + '/' + 'messages/' + data.messageId)
 
             axios.put(API_URL + '/' + 'messages/' + data.messageId,
                 {
@@ -67,7 +67,7 @@ export const message = {
                 }
             ).then(
                 response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     commit('updateMessageMutation', response.data)
                 },
                 error => {
@@ -105,7 +105,7 @@ export const message = {
                     message
                 ]
             }else {
-                console.log('message already added')
+                // console.log('message already added')
             }
 
         },
